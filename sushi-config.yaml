@@ -1,0 +1,19 @@
+id: hl7.fhir.us.codi
+canonical: http://hl7.org/fhir/us/codi
+name: HL7FHIRImplementationGuideCODIRelease1USRealmSTU1
+status: draft
+version: 0.1.0
+fhirVersion: 4.0.1
+copyrightYear: 2020+
+releaseLabel: draft
+publisher:
+  name: Matthew Tiller
+  url: mitre.org
+  email: mtiller@mitre.org
+dependencies:
+  hl7.fhir.us.core: 3.1.0
+  hl7.fhir.us.cdmh: 0.1.0
+title: "HL7 FHIR Implementation Guide: CODI Data Model - US Realm | STU1"
+description: The Childhood Obesity Data Initiative (CODI) data model as FHIR
+menu:
+  Home: index.html
