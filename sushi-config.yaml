@@ -14,6 +14,10 @@ dependencies:
   hl7.fhir.us.core: 3.1.0
   hl7.fhir.us.cdmh: 0.1.0
 title: "HL7 FHIR Implementation Guide: CODI Data Model - US Realm | STU1"
-description: The Childhood Obesity Data Initiative (CODI) data model as FHIR
+description: The Clinical & Community Data Initiative (CODI) FHIR Implementation Guide
 menu:
   Home: index.html
+  Data Model: dataModel.html
+  Profiles: artifacts.html
+  Downloads: downloads.html
+  Examples: examples.html
