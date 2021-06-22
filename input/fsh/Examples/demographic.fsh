@@ -1,6 +1,6 @@
-Instance: Child1
-InstanceOf: CODIDemographicProfile
-Title: "Child1"
+Instance: Demographic1
+InstanceOf: USCorePatientProfile
+Title: "Demographic1"
 Usage: #example
 * name[0].given = "NiCholas"
 * name[0].family = "CODI"
@@ -20,16 +20,5 @@ Usage: #example
 * extension[1].extension[1].valueString = "Not Hispanic or Latino"
 * extension[2].url = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex"
 * extension[2].valueCode = #M
-
-
-//WHY DOES THE BASE IDENTIFIER NOT SHOW UP IN THE IG WHEN THE SLICES ARE PRESENT?
 * identifier.system = "http://codi.nc.mitre.org/Demographic"
 * identifier.value = "child1"
-* identifier[InsuranceID].type.coding.system = "http://hl7.org/fhir/ValueSet/identifier-type"
-* identifier[InsuranceID].type.coding.code = #NIIP
-* identifier[InsuranceID].system = "http://www.acme.com/identifiers/patient"
-* identifier[InsuranceID].value = "insurance_id"
-* identifier[HashIdentity].type.coding.system = "http://hl7.org/fhir/ValueSet/identifier-type"
-* identifier[HashIdentity].type.coding.code = #CODI_Hash
-* identifier[HashIdentity].system = "http://www.acme.com/identifiers/patient"
-* identifier[HashIdentity].value = "hash_identity"
