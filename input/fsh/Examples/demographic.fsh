@@ -1,12 +1,8 @@
 Instance: Demographic1
-InstanceOf: USCorePatientProfile
+InstanceOf: CODIDemographicProfile
 Title: "Demographic1"
 Usage: #example
-* name[0].given = "NiCholas"
-* name[0].family = "CODI"
-* name[0].use = #official
-* name[1].family = "Denver"
-* name[1].use = #maiden
+//* name.extension[data-absent-reason].valueCode = #masked
 * gender = #male
 * extension[0].url = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race"
 * extension[0].extension[0].url = "ombCategory"
@@ -20,5 +16,4 @@ Usage: #example
 * extension[1].extension[1].valueString = "Not Hispanic or Latino"
 * extension[2].url = "http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex"
 * extension[2].valueCode = #M
-* identifier.system = "http://codi.nc.mitre.org/Demographic"
-* identifier.value = "child1"
+* identifier[CODIId].value = "child1"

@@ -6,7 +6,7 @@ The following subsections cover the tables defined by the PCORnet Common Data Mo
 ## Demographic
 | **PCORnet/CODI Table** | **PCORnet Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | --- | --- | --- | --- | --- | 
-| DEMOGRAPHIC | patid | Patient.identifier | us-core-patient | 
+| DEMOGRAPHIC | patid | Patient.identifier | us-core-patient | FHIR element Demographic.identifier SHALL be constrained to only Link IDs
 | DEMOGRAPHIC | birth_date | Patient.birthDate | us-core-patient | 
 | DEMOGRAPHIC | birth_time | Patient.birthDate | us-core-patient | **NOT IN CODI IG**
 | DEMOGRAPHIC | sex | Patient.extension: us-core-birthsex | us-core-patient | 
@@ -16,12 +16,10 @@ The following subsections cover the tables defined by the PCORnet Common Data Mo
 | DEMOGRAPHIC | race | Patient.extension: us-core-race | us-core-patient | 
 | DEMOGRAPHIC | pat_pref_language_spoken | Patient.communication.language | us-core-patient | 
 
-ClearTextIdentifier, HashedIdentifier, AssetDelivery, CensusLocation, Cost, Diagnosis, Encounter, FamilyHistory, LabResult, Prescribing, Procedure, Session, Referral, Vital, Link
-
 ## Diagnosis
 | **PCORnet/CODI Table** | **PCORnet Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
-| DIAGNOSIS | diagnosisid | Condition.id | us-core-condition | Use identifier FHIR element
+| DIAGNOSIS | diagnosisid | Condition.identifier | us-core-condition | CDMH mapped this to the "id" FHIR element, but CODI maps it to "identifier"
 | DIAGNOSIS | patid | Condition.subject | us-core-condition | 
 | DIAGNOSIS | encounterid | Condition.encounter | us-core-condition | 
 | DIAGNOSIS | enc_type | Condition.encounter.class | us-core-condition,us-core-encounter | 
@@ -38,7 +36,7 @@ ClearTextIdentifier, HashedIdentifier, AssetDelivery, CensusLocation, Cost, Diag
 ## Encounter
 | **PCORnet/CODI Table** | **PCORnet Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
-| ENCOUNTER | encounterid | Encounter.id | us-core-encounter | Use identifier FHIR element
+| ENCOUNTER | encounterid | Encounter.identifier | us-core-encounter | CDMH mapped this to the "id" FHIR element, but CODI maps it to "identifier"
 | ENCOUNTER | patid | Encounter.subject | us-core-encounter | 
 | ENCOUNTER | admit_date | Encounter.period | us-core-encounter | 
 | ENCOUNTER | admit_time | Encounter.period | us-core-encounter | 
@@ -61,7 +59,7 @@ ClearTextIdentifier, HashedIdentifier, AssetDelivery, CensusLocation, Cost, Diag
 ## Lab_Result_CM
 | **PCORnet/CODI Table** | **PCORnet Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
-| LAB_RESULT_CM | lab_result_cm_id | Observation.id | us-core-observationresults | Use identifier FHIR element
+| LAB_RESULT_CM | lab_result_cm_id | Observation.identifier | us-core-observationresults | CDMH mapped this to the "id" FHIR element, but CODI maps it to "identifier"
 | LAB_RESULT_CM | patid | Observation.subject | us-core-observationresults | 
 | LAB_RESULT_CM | encounterid | Observation.encountr | us-core-observationresults | 
 | LAB_RESULT_CM | lab_name | Observation.performer(organization).name | us-core-observationresults, us-core-organization | 
@@ -96,7 +94,7 @@ The CDMH IG did not provide mappings for the Link PCORnet data elements.
 ## Prescribing
 | **PCORnet/CODI Table** | **PCORnet Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
-| PRESCRIBING | prescribingid | MedicationRequestion.id | us-core-medicationrequest | Use identifier FHIR element
+| PRESCRIBING | prescribingid | MedicationRequestion.identifier | us-core-medicationrequest | CDMH mapped this to the "id" FHIR element, but CODI maps it to "identifier"
 | PRESCRIBING | patid | MedicationRequest.subject | us-core-medicationrequest | 
 | PRESCRIBING | encounterid | MedicationRequest.encounter | us-core-medicationrequest | 
 | PRESCRIBING | rx_providerid | MedicationRequest.requester | us-core-medicationrequest, us-core-practitioner | 
@@ -105,21 +103,22 @@ The CDMH IG did not provide mappings for the Link PCORnet data elements.
 | PRESCRIBING | rx_start_date | MedicationRequest.dispenseRequest.validityPeriod | us-core-medicationrequest | 
 | PRESCRIBING | rx_end_date | MedicationRequest.dispenseRequest.validityPeriod | us-core-medicationrequest | 
 | PRESCRIBING | rx_quantity | MedicationRequest.dispenseRequest.quantity | us-core-medicationrequest | 
-| PRESCRIBING | rx_dose_form | MedicationRequest.dosageInstruction.doseAndRate.dose\[x\] | us-core-medicationrequest | 
-| PRESCRIBING | rx_refills | MedicationRequest.dispenseRequest.numberOfRepeatsAllowed | us-core-medicationrequest | 
-| PRESCRIBING | rx_days_supply | MedicationRequest.dispenseRequest.expectedSupplyDuration | us-core-medicationrequest | 
-| PRESCRIBING | rx_frequency | MedicationRequest.dosageInstruction.timing | us-core-medicationrequest | 
-| PRESCRIBING | rx_basis | MedicationRequest.intent | us-core-medicationrequest | 
+| PRESCRIBING | rx_dose_form | MedicationRequest.dosageInstruction.doseAndRate.dose\[x\] | us-core-medicationrequest | **NOT IN CODI IG**
+| PRESCRIBING | rx_refills | MedicationRequest.dispenseRequest.numberOfRepeatsAllowed | us-core-medicationrequest | **NOT IN CODI IG**
+| PRESCRIBING | rx_days_supply | MedicationRequest.dispenseRequest.expectedSupplyDuration | us-core-medicationrequest | **NOT IN CODI IG**
+| PRESCRIBING | rx_frequency | MedicationRequest.dosageInstruction.timing | us-core-medicationrequest | **NOT IN CODI IG**
+| PRESCRIBING | rx_basis | MedicationRequest.intent | us-core-medicationrequest | **NOT IN CODI IG**
 | PRESCRIBING | rxnorm_cui | MedicationRequest.medicationCodeableConcept | us-core-medicationrequest | 
 | PRESCRIBING | rx_dose_ordered | MedicationRequest.dosageInstruction.doseAndRate.dose\[x\] | us-core-medicationrequest | 
 | PRESCRIBING | rx_dose_ordered_unit | MedicationRequest.dosageInstruction.doseAndRate.dose\[x\] | us-core-medicationrequest | 
-| PRESCRIBING | rx_route | MedicationRequest.dosageInstruction.route | us-core-medicationrequest | 
+| PRESCRIBING | rx_route | MedicationRequest.dosageInstruction.route | us-core-medicationrequest | **NOT IN CODI IG**
+| PRESCRIBING | rx_source | MedicationRequest.extension\[prescribingRxSource\] | us-core-medicationrequest | The rx_source data element is missing from CDMH
 
 
 ## Procedures
 | **PCORnet/CODI Table** | **PCORnet Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
-| PROCEDURES | proceduresid | Procedure.id | us-core-procedure | Use identifier FHIR element
+| PROCEDURES | proceduresid | Procedure.identifier | us-core-procedure | CDMH mapped this to the "id" FHIR element, but CODI maps it to "identifier"
 | PROCEDURES | patid | Procedure.subject | us-core-procedure | 
 | PROCEDURES | encounterid | Procedure.encounter | us-core-procedure | 
 | PROCEDURES | enc_type | Procedure.encounter.class | us-core-procedure,us-core-encounter | 
@@ -142,7 +141,7 @@ The CDMH IG did not provide mappings for the Provider PCORnet data elements.
 ## Vital
 | **PCORnet/CODI Table** | **PCORnet Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
-| VITAL | vitalid | Observation.id | observation-vitalsigns | Use identifier FHIR element
+| VITAL | vitalid | Observation.identifier | observation-vitalsigns | CDMH mapped this to the "id" FHIR element, but CODI maps it to "identifier"
 | VITAL | patid | Observation.subject | observation-vitalsigns | 
 | VITAL | encounterid | Observation.encounter | observation-vitalsigns | 
 | VITAL | measure_date | Observation.effectiveDateTime | observation-vitalsigns | 
