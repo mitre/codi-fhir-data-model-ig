@@ -4,6 +4,14 @@ Description: "Representation of a demographic record in the CODI data model. Def
 * name 1..1
 * name.extension contains data-absent-reason named data-absent-reason 1..1
 * name.extension[data-absent-reason].valueCode = #masked
+* name.id 0..0
+* name.use 0..0
+* name.text 0..0
+* name.family 0..0
+* name.given 0..0
+* name.prefix 0..0
+* name.suffix 0..0
+* name.period 0..0
 * identifier ^slicing.discriminator.path = "identifier.system"
 * identifier ^slicing.discriminator.type = #value
 //* identifier ^slicing.rules = #closed //I want to do this so that there cannot be more identifier slices, but this leads to a runtime error

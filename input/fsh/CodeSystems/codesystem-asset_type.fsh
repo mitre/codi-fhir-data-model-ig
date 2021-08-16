@@ -1,0 +1,10 @@
+CodeSystem: AssetType
+Title: "CODI Asset_Type Code System"
+Description: "Asset_Type code system for CODI. This code system enumerates different kinds of assets a person might receive."
+* #CC "Child care"
+* #FO "Food"
+* #HI "Health insurance"
+* #TR "Transportation"
+* #NI "No information"
+* #UN "Unknown"
+* #OT "Other"

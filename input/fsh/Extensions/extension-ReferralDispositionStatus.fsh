@@ -1,4 +1,4 @@
 Extension: ReferralDispositionStatus
 Id: referralDispositionStatus
-Title: "CODI Disposition Status"
+Title: "CODI Referral Disposition Status"
 * valueCodeableConcept only CodeableConcept

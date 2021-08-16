@@ -1,4 +1,4 @@
 Extension: ReferralPriorAuth
 Id: referralPriorAuth
-Title: "CODI Prior Auth"
+Title: "CODI Referral Prior Auth"
 * valueBoolean only boolean

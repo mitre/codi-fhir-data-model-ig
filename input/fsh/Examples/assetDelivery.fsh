@@ -6,7 +6,7 @@ Usage: #example
 * instantiatesCanonical = "http://codi.nc.mitre.org/Program/GotR_Triangle"
 * status = #completed
 * intent = #plan
-* code.coding = http://teminology.hl7.org/CodeSystem/CODI-asset-delivery#fo "fo"
+* code.coding = AssetType#FO
 * subject = Reference(Patient/child1)
 * quantityQuantity.value = 55.86
 * quantityQuantity.system = "http://hl7.org/fhir/ValueSet/currencies"
