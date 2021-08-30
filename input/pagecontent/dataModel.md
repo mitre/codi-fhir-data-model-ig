@@ -1,13 +1,35 @@
-The CODI data model was developed with an attempt to reuse existing data models where appropriate. Roughly half of the CODI data model is based on the PCORnet Common Data Model. The Common Data Models Harmonization (CDMH) FHIR IG seeks to map and translate data extracted for PCOR purposes into FHIR format. Where possible, this IG utilizes CDMH. 
+The CODI research data model (RDM) was developed with an attempt to reuse existing data models where appropriate. Roughly half of the CODI data model is based on the 
+PCORnet Common Data Model. The [Common Data Models Harmonization (CDMH) FHIR IG](http://hl7.org/fhir/us/cdmh/2019May/profiles.html) seeks to map and 
+translate data extracted for PCOR purposes into FHIR format. Where possible, this IG utilizes CDMH. 
 
 ## PCORnet Data Tables
-The following subsections detail CODI tables that are based on the PCORnet CDM. The mappings to FHIR are based on CDMH, which utilizes US Core. The Provider and Vital tables are exceptions to this rule and details are given below.
-Additionally, CDMH maps IDs the "id" FHIR data element for Resources, but here they are mapped to the "identifier" data element because CODI 
-utilizes data owners' business identifiers, not FHIR logical identifiers, to reference data.
+The following subsections detail CODI tables that are based on the PCORnet CDM. Not all PCORnet data elements are carried over to CODI. The mappings to 
+FHIR are based on [CDMH](http://hl7.org/fhir/us/cdmh/2019May/profiles.html), except for the Provider and Vital tables, details of which are given below.
+
+CDMH maps identifier data elements to the "id" FHIR data element for Resources (except for the CDM DEMOGRAPHIC table). But in CODI they are 
+mapped to the "identifier" data element because CODI utilizes data owners' business identifiers, not FHIR logical identifiers, to reference data.
 
 ### Demographic
-The CDM DEMOGRAPHIC table contains a single record for each patient. Demographics record the direct attributes of individual
-patients.
+The CDM DEMOGRAPHIC table contains a single record for each patient with at
+least one clinical visit or program participation since the implementing network’s start date.
+Implementers should not include patients without other records in the RDM. For example, a
+patient should be included in the DEMOGRAPHIC table if they have ENCOUNTER data, but not
+VITAL data.
+
+To preserve referential integrity, there must be a DEMOGRAPHIC record for any child for
+whom information exists in any other RDM table (such as ENCOUNTER or SESSION).
+Conversely, every DEMOGRAPHIC record should have corresponding records in at least one
+other RDM table.
+
+CODI omits children without other information in the RDM because populating the
+DEMOGRAPHIC table with all children introduces the possibility that their PII is shared with
+the DCC even though insufficient information exists about those children to answer possible
+research questions. For example, a child might be selected as a member of a cohort based on age
+and sex, but absent any encounters, vital signs, or program participation, none of the CODI
+research questions benefit from the inclusion of that child.
+
+No PII is contained in DEMOGRAPHIC because of the research nature of CODI. DEMOGRAPHIC's identifier is a Link ID as defined 
+in the Privacy Preserving Record Linkage (PPRL) IG.
 
 | **PCORnet/CODI Table** | **PCORnet Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | --- | --- | --- | --- | --- | 
@@ -128,7 +150,8 @@ interventions and diagnostic testing, such as surgical procedures and lab orders
 The CDM PROVIDER table contains one record per PROVIDER ID. Data about the providers who are involved in the care processes
 documented in the CDM.
 
-CDMH does not provide mappings for Provider from the PCORnet CDM. The mappings provided below are created by the CODI project.
+CDMH does not provide mappings for Provider from the PCORnet CDM. The mappings provided below are created by the CODI project. 
+If this is addressed in future CDMH updates then CODI will attempt to align with CDMH.
 
 | **PCORnet/CODI Table** | **PCORnet Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
@@ -140,11 +163,11 @@ CDMH does not provide mappings for Provider from the PCORnet CDM. The mappings p
 The CDM VITAL table contains one record for each measurement of vital signs. Vital signs (such as height, weight, and blood
 pressure) directly measure an individual’s current state of attributes.
 
-US Core has progressed since the most recent CDMH update, so the original CDMH mappings are not used for VITAL.
-
-US Core now offers profiles for vital signs, including individually for BMI, blood pressure, height, and weight. 
-
-These profiles are all derived from the US Core Vital Signs Profile. The choice of profile depends on which vital sign is being reported.
+US Core has progressed since the most recent CDMH update, so the CDMH mappings for VITAL are not used.
+US Core has profiles for individual vital signs, including BMI, blood pressure, height, and weight. 
+These individual profiles are all based on a parent US Core profile called the US Core Vital Signs Profile. The choice of profile depends on 
+which vital sign is being reported. Each vital sign is modeled as an idividual resource. They are not combined into a single "vital" 
+record as they are in the PCORnet CDM.
 
 | **PCORnet/CODI Table** | **PCORnet Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
@@ -165,7 +188,12 @@ These profiles are all derived from the US Core Vital Signs Profile. The choice 
 ### Alert
 The ALERT table contains one record for each distinct kind of alert. Alerts are components of a clinical decision support system
 (CDS). Given the gamut of possible alerts and the idiosyncrasies of CDS implementations, CODI only captures a prose description of
-the intended function of the alert. Only obesity- or weight-related alerts should be captured for CODI.
+the intended function of the alert. Only cardiometabolic condition and weight related alerts should be captured for CODI.
+For each such alert, the ALERT table captures information about
+the circumstances surrounding that alert. ALERT is a reference table that will likely need to be
+populated manually because the information it contains requires human curation. The attributes
+appearing in this table are intended to help a researcher understand when and why an alert might
+trigger.
 
 | **CODI Table** | **CODI Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
@@ -176,7 +204,21 @@ the intended function of the alert. Only obesity- or weight-related alerts shoul
 
 ### Asset Delivery
 The ASSET_DELIVERY table contains one record for each contiguous period of time during which a person consistently receives
-assets. An asset is a resource transferred by a program to an individual.
+assets. An asset is a resource transferred by a program to an individual.The intention is that each record represents a series of asset deliveries that regularly
+transpires. In situations where each delivery is ad hoc, the expectation is that a separate record
+appears for each such delivery. Otherwise, CODI assumes the deliveries occur on a recurring
+basis as described by the record. DELIVERY_FREQ indicates the number of deliveries within
+each unit of time. DELIVERY_FREQ_UNIT establishes the corresponding unit of time.
+
+Monthly refers to calendar months. Deliveries that happen every 28 days should be encoded as
+0.25 deliveries every week (i.e., once every four weeks). For example, an individual might
+receive cash benefits twice every calendar month. The start and end dates indicate the period of
+time during which these benefits were received, with a DELIVERY_FREQ_UNIT of Monthly
+and a DELIVERY_FREQ of 2.
+
+Data partners that participate in asset delivery are encouraged to populate the
+ASSET_PURPOSE at a minimum because it provides researchers with insight into the
+circumstances surrounding the delivery of assets.
 
 | **CODI Table** | **CODI Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
@@ -190,11 +232,23 @@ assets. An asset is a resource transferred by a program to an individual.
 | ASSET_DELIVERY | DELIVERY_FREQ_UNIT | occurrence\[x\] | ServiceRequest |  |
 
 ### Curriculum Component
+The CURRICULUM_COMPONENT table enumerates the standard elements of a program. It
+supports a fixed curriculum, in which the components are ordered using SESSION_INDEX, and
+a recurring curriculum, in which the components repeat. Repeating components are documented
+with a combination of SESSION_FREQ and SESSION_FREQ_UNIT, as described above.
+
+The remaining attributes mirror those in the SESSION table (as described below). The
+CURRICULUM_COMPONENT table describes what is intended to happen throughout the
+course of the program. The SESSION table describes what has been documented as having
+transpired. The CURRICULUM_COMPONENT table provides researchers with insight into
+what likely happened when session information is missing or incomplete.
+
 A curriculum component is a standard element of a program. A program can comprise a fixed curriculum with a predefined endpoint
 and an enumerated set of standard sessions. Or, a program can comprise a recurring curriculum with no endpoint and a set of standard
 sessions that recur with some frequency.
 
-In the CODI RDM, a CURRICULUM_COMPONENT points to a PROGRAM via programId.A curriculum component is related to a program via the program's action.definitionCanonical. This is a reversal from the CODI RDM, in which
+In the CODI RDM, a CURRICULUM_COMPONENT points to a PROGRAM via programId. A curriculum component is related to a program 
+via the program's action.definitionCanonical. This is a reversal from the CODI RDM, in which
 
 | **CODI Table** | **CODI Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
@@ -212,8 +266,12 @@ In the CODI RDM, a CURRICULUM_COMPONENT points to a PROGRAM via programId.A curr
 
 ### Family History
 The FAMILY_HISTORY table stores information regarding a child’s family history of disease. A separate record is created for each
-report of a condition that a family member has. Absence of a record in this table is not indicative the absence of a condition.
+report of a condition that a family member has. Thus, if a child’s parents both have a
+history of obesity, two records would be present in this table. Absence of a record in this table is not indicative the absence of a condition.
 This information is intended to be pulled from the patient's record, not by linking to a family member's medical record.
+Reported conditions must be linked to controlled vocabulary—an ICD-9, ICD-10, or SNOMED
+code—so researchers can easily interpret the reported family condition. Implementers will need
+to map from whatever terminology is used for family history to one of these vocabularies.
 
 | **CODI Table** | **CODI Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
@@ -225,8 +283,49 @@ This information is intended to be pulled from the patient's record, not by link
 | FAMILY_HISTORY | REPORT_DATE | date | FamilyMemberHistory |  |
 
 ### Program
-The PROGRAM table contains one record for each distinct program. A program comprises a collection of interventions intended to
-produce a particular outcome.
+The PROGRAM table contains one record for each distinct weight-related program. For the
+purposes of CODI, each location at which a program is administered constitutes a distinct
+program. For example, each clinic that administers a weight management program appears
+separately in the PROGRAM table.
+
+This is the second table that will likely need to be manually populated. It captures a program
+manager’s best understanding of how a weight-related program is administered and for what
+purpose. The attributes with the PROGRAM_ and AIM_ prefixes apply to every program. The
+attributes with the PRESCRIBED_ prefix only apply to those programs with a predefined
+frequency of interaction, such as a program that lasts for ten weeks, and meets twice a week, two
+hours each time. This regularity allows researchers to know the intended dose and intensity (i.e.,
+frequency of interaction) for the program. Programs without a predefined dose should leave these
+attributes blank.
+
+The AFFILIATED_PROGRAM attribute provides a way to document that a given program is
+affiliated with an encompassing program. For example, consider a weight-related program with
+two component programs (a cooking class and a physical activity program); participation in each
+is based on each child’s needs: this configuration includes three programs. The affiliated
+programs (i.e., cooking class, physical activity program) include prescribed doses and have
+specific aims, while the parent program has no set dose, and its aims are broad. The
+AFFILIATED_PROGRAM attribute allows the affiliated programs to indicate the parent
+program with which they are affiliated.
+
+The attributes with the LOCATION_ prefix describe the location at which the program is
+typically administered. Three variants of location are supported: address, geospatial coordinates
+(latitude and longitude), and geocode (typically census tract). Data partners should provide all
+three variants for each program, if possible.
+
+The attributes with the SESSION_OMISSION_ prefix describe the circumstances under which
+session information is missing for the program. For example, some clinical programs only record
+sessions with a clinical component. The sessions lacking a clinical component are not
+documented and therefore do not appear in the SESSION table. Other programs exhibit less
+systematic omissions, e.g., because attendance is sometimes captured on paper. These attributes
+are included to help researchers better decide how to handle mission session information.
+
+There are no dates of enrollment or completion associated with a program for two reasons. First,
+the program table describes how the program is administered irrespective of any child’s
+participation in the program. Enrollment and completion dates would need to be stored in a
+separate program participation table. Such a table does not exist because the Technical
+Environmental Scan determined that enrollment is often hard to distinguish from attendance (i.e.,
+the first session attended indicates enrollment). Completion date was almost never available. A
+researcher interested in program completion might compare the cumulative dose received with
+the prescribed total dose for that program.
 
 | **CODI Table** | **CODI Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
@@ -253,7 +352,18 @@ produce a particular outcome.
 | PROGRAM | SESSION_OMISSION_SYSTEMATIC | extension\[programSessionOmission\].extension\[systematic\].valueBoolean |  |  |
 
 ### Referral
-The REFERRAL table contains one record for each outgoing or incoming referral.
+The REFERRAL table contains one record for each outgoing or incoming referral. The
+DIRECTION attribute indicates if the record represents a data partner initiating a referral
+(outgoing) or receiving a referral (incoming). Internal referrals should result in two records in the
+REFERRAL table: one outgoing referral and a second incoming referral. The purpose of the
+source and destination organization attributes is to link outgoing referrals with incoming referrals
+so researchers can see whether a referral successfully connected a child with a weight-related
+program. 
+
+Implementers will need to map organizations to CMS Certification NumbersFor clinical organizations, use the CMS 
+Certification Number (CCN); each implementing network will need to choose a representative
+CCN for its clinical data partners. For community organizations, each implementing network will need to establish a set of community
+organization codes. These additional codes should include at least one letter so that they do not conflict with CCNs.
 
 | **CODI Table** | **CODI Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
@@ -265,8 +375,8 @@ The REFERRAL table contains one record for each outgoing or incoming referral.
 | REFERRAL | REFERRAL_STATUS | extension\[referralDispositionStatus\] | CODIReferralProfile |  |
 | REFERRAL | REFERRAL_PRIOR_AUTH | extension\[referralPriorAuth\] | CODIReferralProfile |  |
 | REFERRAL | SOURCE_PROVIDERID | requester | CODIReferralProfile |  |
-| REFERRAL | SOURCE_ORGANIZATION | requester | CODIReferralProfile |  |
-| REFERRAL | DESTINATION_ORGANIZATION | performer | CODIReferralProfile |  |
+| REFERRAL | SOURCE_ORGANIZATION | requester | CODIReferralProfile | CMS Certification Numbers |
+| REFERRAL | DESTINATION_ORGANIZATION | performer | CODIReferralProfile | CMS Certification Numbers |
 | REFERRAL | DESTINATION_SPECIALTY | performerType | CODIReferralProfile |  |
 
 ### Session
@@ -274,12 +384,8 @@ The SESSION table contains one record for each session. A session is a specific 
 programming that focuses on obesity, obesity prevention, healthy eating, or active living.
 
 In a clinical setting, a session corresponds to a visit. There may be multiple visits in a single encounter. The ENCOUNTERID field is
-required for clinical sessions.
-
-In a community setting, a session corresponds to one component of a program. The PROGRAMID field is required for sessions that
-are components of a program.
-
-At least one of those fields should be present in every case.
+required for clinical sessions. In a community setting, a session corresponds to one component of a program. The PROGRAMID field is required for sessions that
+are components of a program. At least one of those fields should be present in every case.
 
 | **CODI Table** | **CODI Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
@@ -305,18 +411,18 @@ At least one of those fields should be present in every case.
 ### Session Alert
 The SESSION_ALERT table contains one record for each alert that triggered during a session.
 
-CODI session alerts are not implemented as a FHIR resource. Instead, they are an extension on the Procedure resource as 
+CODI session alerts are not implemented as a distinct FHIR resource. Instead, they are an extension on the Procedure resource as 
 defined in CODISessionProfile. The extension has cardinality 0..\* and contains a reference to an ALERT and a dateTime.
 
-## VDW Data Tables
+## CHORDS Data Tables
 
 ### Census Demog
-The VDW CENSUS_DEMOG table is a static reference table that will be provided to each data partner through the PopMedNet data
+The CHORDS CENSUS_DEMOG table is a static reference table that will be provided to each data partner through the PopMedNet data
 sharing client. This data is used to provide community level attributes for each census tract or county of a patient’s residence.
 
-For complete documentation, see the CHORDS VDW Data Model Manual.
+For complete documentation, see the CHORDS VDW Data Model Manual. The data elements are listed below for informational purposes.
 
-| **VDW/CODI Table** | **VDW Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
+| **CHORDS/CODI Table** | **CHORDS Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
 | CENSUS_DEMOG | BLOCK |  |  |  |
 | CENSUS_DEMOG | CENSUS_DATA_SRC |  |  |  |
@@ -343,10 +449,10 @@ For complete documentation, see the CHORDS VDW Data Model Manual.
 | CENSUS_DEMOG | CensusLocation |  |  |  |
 
 ### Census Location
-The VDW CENSUS_LOCATION table holds patient geographic location information collected at healthcare encounters. Patient
+The CHORDS CENSUS_LOCATION table holds patient geographic location information collected at healthcare encounters. Patient
 addresses should be geocoded, and FIPS codes down to the census tract level should be populated in the CENSUS_LOCATION table.
 
-| **VDW/CODI Table** | **VDW Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
+| **CHORDS/CODI Table** | **CHORDS Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
 | CENSUS_LOCATION | PERSON_ID | extension\[censusLocationPersonId\].valueReference | CODICensusLocationProfile |  |
 | CENSUS_LOCATION | LOC_START | address.period.start | CODICensusLocationProfile |  |

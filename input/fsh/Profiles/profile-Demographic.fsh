@@ -14,7 +14,7 @@ Description: "Representation of a demographic record in the CODI data model. Def
 * name.period 0..0
 * identifier ^slicing.discriminator.path = "identifier.system"
 * identifier ^slicing.discriminator.type = #value
-//* identifier ^slicing.rules = #closed //I want to do this so that there cannot be more identifier slices, but this leads to a runtime error
+* identifier ^slicing.rules = #closed //I want to do this so that there cannot be more identifier slices, but this leads to a runtime error
 * identifier ^slicing.description = "Slice for Link Identifiers"
 * identifier contains CODIId 1..1 and LinkId 0..*
 * identifier[CODIId].system = "http://codi.nc.mitre.org/Demographic_Identifier"

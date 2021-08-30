@@ -17,7 +17,8 @@ title: "HL7 FHIR Implementation Guide: CODI Data Model - US Realm | STU1"
 description: The Clinical & Community Data Initiative (CODI) FHIR Implementation Guide
 menu:
   Home: index.html
+  Background: background.html
   Data Model: dataModel.html
-  Profiles: artifacts.html
+  Artifacts: artifacts.html
   Downloads: downloads.html
   Examples: examples.html
