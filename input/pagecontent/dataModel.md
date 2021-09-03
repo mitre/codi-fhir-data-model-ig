@@ -1,32 +1,35 @@
-The CODI research data model (RDM) was developed with an attempt to reuse existing data models where appropriate. Roughly half of the CODI data model is based on the 
+The CODI research data model (RDM) utilizes existing data models where appropriate. Roughly half of the CODI data model is based on the 
 PCORnet Common Data Model. The [Common Data Models Harmonization (CDMH) FHIR IG](http://hl7.org/fhir/us/cdmh/2019May/profiles.html) seeks to map and 
-translate data extracted for PCOR purposes into FHIR format. Where possible, this IG utilizes CDMH. 
+translate data extracted for PCOR purposes into FHIR format. Where possible, this IG utilizes CDMH. Otherwise, the CODI RDM utilizes OMOP, CHORDS VDW, 
+or custom ancillary data tables.
+
+Below are the mappings from CODI RDM data tables into FHIR.
 
 ## PCORnet Data Tables
-The following subsections detail CODI tables that are based on the PCORnet CDM. Not all PCORnet data elements are carried over to CODI. The mappings to 
-FHIR are based on [CDMH](http://hl7.org/fhir/us/cdmh/2019May/profiles.html), except for the Provider and Vital tables, details of which are given below.
+The following subsections detail CODI tables that are based on the PCORnet CDM. Only select PCORnet data elements are used in CODI. The FHIR mappings 
+are based on [CDMH](http://hl7.org/fhir/us/cdmh/2019May/profiles.html), except for the Provider and Vital tables, details of which are given below.
 
-CDMH maps identifier data elements to the "id" FHIR data element for Resources (except for the CDM DEMOGRAPHIC table). But in CODI they are 
+CDMH maps identifier data elements to the "id" FHIR data element (except for the CDM DEMOGRAPHIC table, which is mapped to "identifier"). But in CODI they are 
 mapped to the "identifier" data element because CODI utilizes data owners' business identifiers, not FHIR logical identifiers, to reference data.
 
 ### Demographic
 The CDM DEMOGRAPHIC table contains a single record for each patient with at
 least one clinical visit or program participation since the implementing network’s start date.
 Implementers should not include patients without other records in the RDM. For example, a
-patient should be included in the DEMOGRAPHIC table if they have ENCOUNTER data, but not
+patient should be included in the DEMOGRAPHIC table if they have ENCOUNTER data, but not included if they have only 
 VITAL data.
 
-To preserve referential integrity, there must be a DEMOGRAPHIC record for any child for
+To preserve referential integrity, there must be a DEMOGRAPHIC record for any person for
 whom information exists in any other RDM table (such as ENCOUNTER or SESSION).
 Conversely, every DEMOGRAPHIC record should have corresponding records in at least one
 other RDM table.
 
-CODI omits children without other information in the RDM because populating the
-DEMOGRAPHIC table with all children introduces the possibility that their PII is shared with
-the DCC even though insufficient information exists about those children to answer possible
-research questions. For example, a child might be selected as a member of a cohort based on age
+CODI omits DEMOGRAPHIC records without other information in the RDM because populating the
+DEMOGRAPHIC table with all records introduces the possibility that PII is shared with
+the DCC even though insufficient information exists about those records to answer possible
+research questions. For example, a person might be selected as a member of a cohort based on age
 and sex, but absent any encounters, vital signs, or program participation, none of the CODI
-research questions benefit from the inclusion of that child.
+research questions benefit from the inclusion of that person.
 
 No PII is contained in DEMOGRAPHIC because of the research nature of CODI. DEMOGRAPHIC's identifier is a Link ID as defined 
 in the Privacy Preserving Record Linkage (PPRL) IG.
@@ -243,8 +246,8 @@ course of the program. The SESSION table describes what has been documented as h
 transpired. The CURRICULUM_COMPONENT table provides researchers with insight into
 what likely happened when session information is missing or incomplete.
 
-A curriculum component is a standard element of a program. A program can comprise a fixed curriculum with a predefined endpoint
-and an enumerated set of standard sessions. Or, a program can comprise a recurring curriculum with no endpoint and a set of standard
+A program can comprise a fixed curriculum with a predefined endpoint and an enumerated set of 
+standard sessions. Or, a program can comprise a recurring curriculum with no endpoint and a set of standard
 sessions that recur with some frequency.
 
 In the CODI RDM, a CURRICULUM_COMPONENT points to a PROGRAM via programId. A curriculum component is related to a program 
@@ -265,8 +268,8 @@ via the program's action.definitionCanonical. This is a reversal from the CODI R
 | CURRICULUM_COMPONENT | DOSE | extension\[sessionDose\] | CODICurriculumComponentProfile |  |
 
 ### Family History
-The FAMILY_HISTORY table stores information regarding a child’s family history of disease. A separate record is created for each
-report of a condition that a family member has. Thus, if a child’s parents both have a
+The FAMILY_HISTORY table stores information regarding a person’s family history of disease. A separate record is created for each
+report of a condition that a family member has. Thus, if a person’s parents both have a
 history of obesity, two records would be present in this table. Absence of a record in this table is not indicative the absence of a condition.
 This information is intended to be pulled from the patient's record, not by linking to a family member's medical record.
 Reported conditions must be linked to controlled vocabulary—an ICD-9, ICD-10, or SNOMED
@@ -288,22 +291,22 @@ purposes of CODI, each location at which a program is administered constitutes a
 program. For example, each clinic that administers a weight management program appears
 separately in the PROGRAM table.
 
-This is the second table that will likely need to be manually populated. It captures a program
-manager’s best understanding of how a weight-related program is administered and for what
-purpose. The attributes with the PROGRAM_ and AIM_ prefixes apply to every program. The
+This table will likely need to be manually populated. It captures a program
+manager’s best understanding of how a program is administered and for what
+purpose(s). The attributes with the PROGRAM_ and AIM_ prefixes apply to every program. The
 attributes with the PRESCRIBED_ prefix only apply to those programs with a predefined
 frequency of interaction, such as a program that lasts for ten weeks, and meets twice a week, two
 hours each time. This regularity allows researchers to know the intended dose and intensity (i.e.,
 frequency of interaction) for the program. Programs without a predefined dose should leave these
 attributes blank.
 
-The AFFILIATED_PROGRAM attribute provides a way to document that a given program is
+The AFFILIATED_PROGRAMID attribute provides a way to document that a given program is
 affiliated with an encompassing program. For example, consider a weight-related program with
 two component programs (a cooking class and a physical activity program); participation in each
-is based on each child’s needs: this configuration includes three programs. The affiliated
+is based on each person’s needs: this configuration includes three programs. The affiliated
 programs (i.e., cooking class, physical activity program) include prescribed doses and have
 specific aims, while the parent program has no set dose, and its aims are broad. The
-AFFILIATED_PROGRAM attribute allows the affiliated programs to indicate the parent
+AFFILIATED_PROGRAMID attribute allows the affiliated programs to indicate the parent
 program with which they are affiliated.
 
 The attributes with the LOCATION_ prefix describe the location at which the program is
@@ -319,10 +322,10 @@ systematic omissions, e.g., because attendance is sometimes captured on paper. T
 are included to help researchers better decide how to handle mission session information.
 
 There are no dates of enrollment or completion associated with a program for two reasons. First,
-the program table describes how the program is administered irrespective of any child’s
+the program table describes how the program is administered irrespective of any person’s
 participation in the program. Enrollment and completion dates would need to be stored in a
-separate program participation table. Such a table does not exist because the Technical
-Environmental Scan determined that enrollment is often hard to distinguish from attendance (i.e.,
+separate program participation table. Such a table does not exist because it was 
+determined that enrollment is often hard to distinguish from attendance (i.e.,
 the first session attended indicates enrollment). Completion date was almost never available. A
 researcher interested in program completion might compare the cumulative dose received with
 the prescribed total dose for that program.
@@ -333,20 +336,20 @@ the prescribed total dose for that program.
 | PROGRAM | PROGRAM_NAME | title | CODIProgramProfile |  |
 | PROGRAM | PROGRAM_DESCRIPTION | description | CODIProgramProfile |  |
 | PROGRAM | PROGRAM_SETTING | useContext | CODIProgramProfile | Value set SettingType |
-| PROGRAM | AFFILIATED_PROGRAMID | action.definitionCanonical | CODIProgramProfile | canonical reference to a parent PROGRAM |
+| PROGRAM | AFFILIATED_PROGRAMID | action.definitionCanonical | CODIProgramProfile | canonical reference to a child PROGRAM |
 | PROGRAM | AIM_NUTRITION | topic | CODIProgramProfile | Value set ProgramType |
 | PROGRAM | AIM_ACTIVITY | topic | CODIProgramProfile | Value set ProgramType |
 | PROGRAM | AIM_WEIGHT | topic | CODIProgramProfile | Value set ProgramType |
-| PROGRAM | PRESCRIBED_TOTAL_DOSE |  | CODIProgramProfile | Derived value from PRESCRIBED_PROGRAM_DURATION, PRESCRIBED_SESSION_FREQUENCY, and PRESCRIBED_SESSION_LENGTH |
-| PROGRAM | PRESCRIBED_PROGRAM_DURATION | action.timingTiming |  |  |
-| PROGRAM | PRESCRIBED_SESSION_FREQUENCY | action.timingTiming |  |  |
-| PROGRAM | PRESCRIBED_SESSION_LENGTH | action.timingTiming |  |  |
-| PROGRAM | LOCATION_ADDRESS | address | CODICensusLocationProfile |  |
-| PROGRAM | LOCATION_LATITUDE | position.latitude | CODICensusLocationProfile |  |
-| PROGRAM | LOCATION_LONGITUDE | position.longitude | CODICensusLocationProfile |  |
-| PROGRAM | LOCATION_GEOCODE | extension\[censusLocationGeocode\].valueString | CODICensusLocationProfile |  |
-| PROGRAM | LOCATION_BOUNDARY_YEAR | extension\[censusLocationGeocodeBoundaryYear\].valueDate | CODICensusLocationProfile |  |
-| PROGRAM | LOCATION_GEOLEVEL | extension\[censusLocationGeolevel\].valueCoding | CODICensusLocationProfile |  |
+| PROGRAM | PRESCRIBED_TOTAL_DOSE | (derived value) | CODIProgramProfile | Derived value from PRESCRIBED_PROGRAM_DURATION, PRESCRIBED_SESSION_FREQUENCY, and PRESCRIBED_SESSION_LENGTH |
+| PROGRAM | PRESCRIBED_PROGRAM_DURATION | action.timingTiming | CODIProgramProfile |  |
+| PROGRAM | PRESCRIBED_SESSION_FREQUENCY | action.timingTiming | CODIProgramProfile |  |
+| PROGRAM | PRESCRIBED_SESSION_LENGTH | action.timingTiming | CODIProgramProfile |  |
+| PROGRAM | LOCATION_ADDRESS | address | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_LATITUDE | position.latitude | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_LONGITUDE | position.longitude | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_GEOCODE | extension\[censusLocationGeocode\].valueString | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_BOUNDARY_YEAR | extension\[censusLocationGeocodeBoundaryYear\].valueDate | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_GEOLEVEL | extension\[censusLocationGeolevel\].valueCoding | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
 | PROGRAM | SESSION_OMISSION_PERCENT | extension\[programSessionOmission\].extension\[percent\].valueDecimal |  |  |
 | PROGRAM | SESSION_OMISSION_DESCRIPTION | extension\[programSessionOmission\].extension\[description\].valueString |  |  |
 | PROGRAM | SESSION_OMISSION_SYSTEMATIC | extension\[programSessionOmission\].extension\[systematic\].valueBoolean |  |  |
@@ -357,10 +360,10 @@ DIRECTION attribute indicates if the record represents a data partner initiating
 (outgoing) or receiving a referral (incoming). Internal referrals should result in two records in the
 REFERRAL table: one outgoing referral and a second incoming referral. The purpose of the
 source and destination organization attributes is to link outgoing referrals with incoming referrals
-so researchers can see whether a referral successfully connected a child with a weight-related
+so researchers can see whether a referral successfully connected a person with a weight-related
 program. 
 
-Implementers will need to map organizations to CMS Certification NumbersFor clinical organizations, use the CMS 
+Implementers will need to map organizations to CMS Certification Numbers. For clinical organizations, use the CMS 
 Certification Number (CCN); each implementing network will need to choose a representative
 CCN for its clinical data partners. For community organizations, each implementing network will need to establish a set of community
 organization codes. These additional codes should include at least one letter so that they do not conflict with CCNs.
@@ -380,7 +383,7 @@ organization codes. These additional codes should include at least one letter so
 | REFERRAL | DESTINATION_SPECIALTY | performerType | CODIReferralProfile |  |
 
 ### Session
-The SESSION table contains one record for each session. A session is a specific point in time where a child/family is involved in
+The SESSION table contains one record for each session. A session is a specific point in time where a person is involved in
 programming that focuses on obesity, obesity prevention, healthy eating, or active living.
 
 In a clinical setting, a session corresponds to a visit. There may be multiple visits in a single encounter. The ENCOUNTERID field is
@@ -449,12 +452,16 @@ For complete documentation, see the CHORDS VDW Data Model Manual. The data eleme
 | CENSUS_DEMOG | CensusLocation |  |  |  |
 
 ### Census Location
-The CHORDS CENSUS_LOCATION table holds patient geographic location information collected at healthcare encounters. Patient
-addresses should be geocoded, and FIPS codes down to the census tract level should be populated in the CENSUS_LOCATION table.
+The CHORDS CENSUS_LOCATION table holds patient and program geographic location information. Addresses should be geocoded, 
+and FIPS codes down to the census tract level should be populated in the CENSUS_LOCATION table.
+
+The CODI FHIR IG added a reference to Program, which is not in the CODI RDM, to provide a location for programs. All CENSUS_LOCATION
+records must have one and only one reference to either a DEMOGRAPHIC or PROGRAM record.
 
 | **CHORDS/CODI Table** | **CHORDS Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
 | CENSUS_LOCATION | PERSON_ID | extension\[censusLocationPersonId\].valueReference | CODICensusLocationProfile |  |
+| CENSUS_LOCATION | (not in CODI RDM) | extension\[censusLocationProgramId\].valueReference | CODICensusLocationProfile | FHIR IG adds reference to Program to provide location |
 | CENSUS_LOCATION | LOC_START | address.period.start | CODICensusLocationProfile |  |
 | CENSUS_LOCATION | LOC_END | address.period.start | CODICensusLocationProfile |  |
 | CENSUS_LOCATION | GEOCODE | extension\[censusLocationGeocode\].valueString | CODICensusLocationProfile |  |

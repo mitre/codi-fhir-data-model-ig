@@ -40,6 +40,30 @@ The numbers in the figure above correspond to:
 1. The DCC assembles the partial query results into a longitudinal record using the patient Link_IDs
 1. The longitudinal records are returned to the researcher
 
+## Program and Curriculum Component Relationships
+The CODI RDM allows relationships among PROGRAM and CURRICULUM_COMPONENTs. Specifically, a PROGRAM 
+can be a child to another PROGRAM, and a PROGRAM can be comprised of many CURRICULUM_COMPONENTs. In
+addition, these CURRICULUM_COMPONENTs can be ordered. In the CODI RDM this is defined as:
+
+| **CODI Table** | **CODI Data Element** | **Definition** |
+| -- | -- | -- |
+| PROGRAM | AFFILIATED_PROGRAMID | A parent program of which this program is a component. |
+| CURRICULUM_COMPONENT | PROGRAMID | A link back to the program this component of a curriculum belongs to. |
+| CURRICULUM_COMPONENT | SESSION_INDEX | An ordinal used to establish a total ordering on the sessions within a fixed curriculum. |
+
+As shown in the table, a child program refers to the parent program, and each curriculum component references the
+program to which it belongs. 
+
+This FHIR IG reverses the direction of these references. The parent program refers to the child, and 
+a program refers to its curriculum components, as shown below. The CURRICULUM_COMPONENTs are ordered 
+implicitly by the array that contains the action FHIR data elements -- the first action is the first 
+curriculum component, and so on.
+
+| **CODI Table** | **CODI Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
+| -- | -- | -- | -- | -- |
+| PROGRAM | AFFILIATED_PROGRAMID | action.definitionCanonical | CODIProgramProfile | canonical reference from a parent to a child PROGRAM |
+| CURRICULUM_COMPONENT | PROGRAMID | action.definitionCanonical | CODIProgramProfile | canonical reference from a PROGRAM to its CURRICULUM_COMPONENTs |
+| CURRICULUM_COMPONENT | SESSION_INDEX | [implicit in ordering of action elements in parent PROGRAM] | CODIProgramProfile | the order of the action data elements in the parent PROGRAM defines the CURRICULUM_COMPONENT order |
 
 ## Cleaning Expectations
 In general, the CODI Data Models should be populated with structured data extracted from the
