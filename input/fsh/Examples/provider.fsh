@@ -5,4 +5,4 @@ Usage: #example
 * identifier[NPI].system = "http://hl7.org/fhir/sid/us-npi"
 * identifier[NPI].value = "123456789"
 * name.family = "Smith"
-* gender = #F
+* gender = #female

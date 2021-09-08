@@ -8,7 +8,7 @@ Usage: #example
 * status = #active
 * topic = ProgramType#NU
 * useContext.valueCodeableConcept.coding = http://teminology.hl7.org/CodeSystem/CODI-setting-type#CO "Community"
-* useContext.code = http://terminology.hl7.org/CodeSystem/usage-context-type#CODIProgram
+* useContext.code = http://terminology.hl7.org/CodeSystem/usage-context-type#task
 * action.title = "GotR Triangle Nutrition"
 * action.description = "Girls on the Run of the Triangle Nutrition action"
 * action.timingTiming.repeat.boundsPeriod.start = "2020-01-01"

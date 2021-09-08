@@ -1,4 +1,4 @@
 Extension: AlertPayloadType
 Id: alertPayloadType
-Title: "CODI Alert Payload Types"
+Title: "CODI Alert Payload Type"
 * valueCode only code

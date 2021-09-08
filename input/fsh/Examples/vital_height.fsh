@@ -9,5 +9,5 @@ Usage: #example
 * valueQuantity.unit = "in"
 * valueQuantity.system = "http://unitsofmeasure.org"
 * valueQuantity.code = #[in_i]
-* subject = Reference(Patient/child1)
+* subject = Reference(Demographic1)
 * effectiveDateTime = "2020-01-01T13:00:00-05:00"

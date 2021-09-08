@@ -6,9 +6,10 @@ version: 0.1.0
 fhirVersion: 4.0.1
 copyrightYear: 2021+
 releaseLabel: draft
+jurisdiction: urn:iso:std:iso:3166#US "null"
 publisher:
   name: Matthew Tiller
-  url: mitre.org
+  url: https://www.mitre.org
   email: mtiller@mitre.org
 dependencies:
   hl7.fhir.us.core: 4.0.0

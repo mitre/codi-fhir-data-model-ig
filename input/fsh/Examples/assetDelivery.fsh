@@ -7,9 +7,9 @@ Usage: #example
 * status = #completed
 * intent = #plan
 * code.coding = AssetType#FO
-* subject = Reference(Patient/child1)
+* subject = Reference(Demographic1)
 * quantityQuantity.value = 55.86
-* quantityQuantity.system = "http://hl7.org/fhir/ValueSet/currencies"
+* quantityQuantity.system = "urn:iso:std:iso:4217"
 * quantityQuantity.code = #USD
 * occurrenceTiming.repeat.boundsPeriod.start = "2020-02-01"
 * occurrenceTiming.repeat.boundsPeriod.end = "2020-06-15"

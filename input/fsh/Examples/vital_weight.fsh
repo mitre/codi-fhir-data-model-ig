@@ -9,5 +9,5 @@ Usage: #example
 * valueQuantity.unit = "lb"
 * valueQuantity.system = "http://unitsofmeasure.org"
 * valueQuantity.code = #[lb_av]
-* subject = Reference(Patient/child1)
+* subject = Reference(Demographic1)
 * effectiveDateTime = "2020-01-01T13:00:00-05:00"
