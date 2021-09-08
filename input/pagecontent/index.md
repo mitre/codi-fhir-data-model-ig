@@ -20,7 +20,7 @@ partner may identify multiple ways to populate the CODI data models using local 
 CODI's underlying data model utilizes the PCORnet Common Data Model (CDM) for standard clinical concepts. CODI also created ancillary tables developed specifically for CODI as a way to introduce new functionality into a PCORnet or PCORnet-compatible clinical data network. Lastly, CODI uses the "Cost" table from Observational Medical Outcomes Partnership (OMOP) CDM and two census tables
 from Colorado Health Observation Regional Data Service (CHORDS) Virtual Data Warehouse (VDW) for location and population-level demographics.
 
-<img src="CODI_base_models.png" alt="CODI RDM Base Data Models" width="50%"/>
+<img src="CODI_base_models.png" alt="CODI RDM Base Data Models" width="50%" style="float: none"/>
 
 Given the use of publicly available data models, CODI builds on the [Common Data Models Harmonization (CDMH) FHIR Implementation Guide (IG)](http://hl7.org/fhir/us/cdmh/2019May/profiles.html) that maps the PCORnet and OMOP CDMs to the [FHIR US Core IG](http://hl7.org/fhir/us/core/index.html). By leveraging the mappings provided by CDMH, a significant portion of the CODI data model can be translated into FHIR. This CODI FHIR IG, extends CDMH with a mixture of US Core profiles as well as some profiles created from base FHIR resources. The [Data Model](/dataModel.html) page details the full mapping between the CODI RDM and FHIR.
 

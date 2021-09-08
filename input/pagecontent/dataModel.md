@@ -250,14 +250,15 @@ A program can comprise a fixed curriculum with a predefined endpoint and an enum
 standard sessions. Or, a program can comprise a recurring curriculum with no endpoint and a set of standard
 sessions that recur with some frequency.
 
-In the CODI RDM, a CURRICULUM_COMPONENT points to a PROGRAM via programId. A curriculum component is related to a program 
-via the program's action.definitionCanonical. This is a reversal from the CODI RDM, in which
+In this IG, a PROGRAM references CURRICULUM_COMPONENTs. This is the reverse of CODI RDM, so in the table below 
+the data element PROGRAMID is not used. The ordering of CURRICULUM_COMPONENTs is also established in the PROGRAM, 
+so the data element SESSION_INDEX below is not used.
 
 | **CODI Table** | **CODI Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
 | CURRICULUM_COMPONENT | CURRICULUM_COMPONENT_ID | identifier | CODICurriculumComponentProfile |  |
-| CURRICULUM_COMPONENT | PROGRAMID |  |  |  |
-| CURRICULUM_COMPONENT | SESSION_INDEX |  |  | The session ordering is established in PROGRAM |
+| CURRICULUM_COMPONENT | PROGRAMID | not used |  | The PROGRAM references the CURRICULUM_COMPONENT | 
+| CURRICULUM_COMPONENT | SESSION_INDEX | not used |  | The session ordering is established in PROGRAM via the ordering of the action data elements |
 | CURRICULUM_COMPONENT | SESSION_FREQ | timingTiming | CODICurriculumComponentProfile |  |
 | CURRICULUM_COMPONENT | SESSION_FREQ_UNIT | timingTiming | CODICurriculumComponentProfile |  |
 | CURRICULUM_COMPONENT | SCREENING | topic | CODICurriculumComponentProfile | Value set InteractionType |
@@ -390,6 +391,10 @@ In a clinical setting, a session corresponds to a visit. There may be multiple v
 required for clinical sessions. In a community setting, a session corresponds to one component of a program. The PROGRAMID field is required for sessions that
 are components of a program. At least one of those fields should be present in every case.
 
+The CODI Session Profile is based on the base FHIR Procedure resource as opposed to the US Core Procedure Profile. The US Core resource 
+requires the code data element and constrains its value set in a way that does not make sense for CODI. It also requires a performed time. 
+The base Procedure resource more closely aligns with the CODI RDM.
+
 | **CODI Table** | **CODI Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
 | SESSION | SESSIONID | identifier | CODISessionProfile |  |
@@ -457,6 +462,9 @@ and FIPS codes down to the census tract level should be populated in the CENSUS_
 
 The CODI FHIR IG added a reference to Program, which is not in the CODI RDM, to provide a location for programs. All CENSUS_LOCATION
 records must have one and only one reference to either a DEMOGRAPHIC or PROGRAM record.
+
+The CODI Census Location Profile is based on the base FHIR Location resource as opposed to the US Core Location Profile. The US Core profile
+requires the name data element, which is a name as used by humans, and does not make sense to use in the context of census locations.
 
 | **CHORDS/CODI Table** | **CHORDS Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
