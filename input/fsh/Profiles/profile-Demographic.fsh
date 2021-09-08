@@ -12,7 +12,7 @@ Description: "Representation of a demographic record in the CODI data model. Def
 * name.prefix 0..0
 * name.suffix 0..0
 * name.period 0..0
-* identifier ^slicing.discriminator.path = "identifier.system"
+* identifier ^slicing.discriminator.path = "system"
 * identifier ^slicing.discriminator.type = #value
 * identifier ^slicing.rules = #closed //I want to do this so that there cannot be more identifier slices, but this leads to a runtime error
 * identifier ^slicing.description = "Slice for Link Identifiers"

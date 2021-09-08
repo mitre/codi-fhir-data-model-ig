@@ -4,6 +4,7 @@ Title: "CurriculumComponent1"
 Usage: #example
 * identifier.value = "curriculumComponent1"
 * status = #active
+* name = "CC1"
 * timingTiming.repeat.frequency = 1
 * timingTiming.repeat.period = 1
 * timingTiming.repeat.periodUnit = #wk

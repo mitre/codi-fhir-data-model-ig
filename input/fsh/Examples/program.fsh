@@ -6,6 +6,7 @@ Usage: #example
 * identifier.value = "program1"
 * title = "Girls on the Run of the Triangle"
 * status = #active
+* name = "P1"
 * topic = ProgramType#NU
 * useContext.valueCodeableConcept.coding = http://teminology.hl7.org/CodeSystem/CODI-setting-type#CO "Community"
 * useContext.code = http://terminology.hl7.org/CodeSystem/usage-context-type#task
