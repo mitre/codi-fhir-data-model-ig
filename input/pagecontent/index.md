@@ -28,24 +28,25 @@ Given the use of publicly available data models, CODI builds on the [Common Data
 
 Value sets defined in the PCORnet CDM are inherited for use in CODI.
 
-This IG defines six new value sets:
-1. Asset Type
-1. Direction Type
-1. Interaction Type
-1. Mode Type
-1. Program Type
-1. Setting Type
+This IG defines six new value sets for concepts included in the CODI ancillary tables:
+1. [Asset Type](ValueSet-AssetType.html)
+1. [Direction Type](ValueSet-DirectionType.html)
+1. [Interaction Type](ValueSet-InteractionType.html)
+1. [Mode Type](ValueSet-ModeType.html)
+1. [Process Performed Type](ValueSet-ProcessPerformedType.html)
+1. [Program Type](ValueSet-ProgramType.html)
+1. [Setting Type](ValueSet-SettingType.html)
 
-## Other Relevant FHIR Implemmentation Guides
+## Other Relevant FHIR Implementation Guides
 This IG describes how data relevant to the CODI project may be represented as a set of FHIR resources. The broader functionality of operating a distributed health data network for research or surveillance is covered through functionality in the The [Making EHR Data More Available for Research and Public Health (MedMorph) Reference Architecture Implementation Guide](http://hl7.org/fhir/us/medmorph/2021JAN/index.html).
 
-As the CODI project evolves, the data model will grow to accomidate other domains of interest. Of particular interest is the area of Social Determinants of Health (SDoH), which are currently being addressed through the [HL7 Gravity Project](https://www.hl7.org/gravity/).
+As the CODI project evolves, the data model will grow to accomodate other domains of interest. Of particular interest is the area of Social Determinants of Health (SDoH), which are currently being addressed through the [HL7 Gravity Project](https://www.hl7.org/gravity/).
 
 ### MedMorph
 MedMorph seeks to enable access to clinical data with a standardized architecture. The MedMorph IG is described as an "Reference Architecture IG" in that it provides
 a common framework for multiple public health and research use cases, including transactions, workflows, message triggers, and notifications. Additional
 Content IGs will be necessary to define requirements for specific use cases, including resource profiles, search parameters, and content-specific APIs.
-Examples of such use cases to be created in the future are the Electronic Case Reporting FHIR IG, Cancer Reporting IG, and HealchCare Survery IG.
+Examples of such use cases to be created in the future are the Electronic Case Reporting FHIR IG, Cancer Reporting IG, and HealthCare Survey IG.
 
 The CODI IG could, in the future, exist as a [MedMorph Content IG](http://hl7.org/fhir/us/medmorph/2021JAN/background.html#relationship-between-medmorph-ig-and-content-implementation-guides). MedMorph utilizes the US Core FHIR IG, which, as the basis of the CODI IG, would help to align
 CODI with MedMorph.
@@ -54,9 +55,10 @@ CODI with MedMorph.
 The MedMorph IG describes an architecture for [Research Use Cases](http://hl7.org/fhir/us/medmorph/2021JAN/researchusecases.html) in which an implementer of this CODI IG would act as a Data Mart. It describes the requirements for a Data Mart within the context of a [Research Data Extraction](http://hl7.org/fhir/us/medmorph/2021JAN/researchdataextraction.html#requirements-for-a-data-mart)
 and a [Research Data Query](http://hl7.org/fhir/us/medmorph/2021JAN/researchdataquery.html).
 
-While the requirements for a Data Mart in a Research Data Query provide the option of responding to queries through ANSI SQL, it is expected that implementers of this IG would provide support for FHIRPath and/or CQL to maximize the use of FHIR-based infrastructure. By using FHIR-based tools, it is possible to reduce the burden on Data Marts, expecially ones that have FHIR-enabled electronic health record systems. Further, CODI End Users will not have to worry about differences in SQL databases / permissions between Data Marts when executing queries.
+While the requirements for a Data Mart in a Research Data Query provide the option of responding to queries through ANSI SQL, it is expected that implementers of this IG would provide support for FHIRPath and/or CQL to maximize the use of FHIR-based infrastructure. By using FHIR-based tools, it is possible to reduce the burden on Data Marts, especially ones that have FHIR-enabled electronic health record systems. Further, CODI End Users will not have to worry about differences in SQL databases / permissions between Data Marts when executing queries.
+
 ### Gravity
-At the time of creation of this IG, the underlying CODI Data Model does not have the ability to represent SDoH information. The data model is being updated and upon completion, those changes will be represented in this IG.
+At the time of creation of this IG, the underlying CODI Data Model does not have the ability to represent SDoH information. The data model is being updated and upon completion, those changes will be represented in a new version of this IG.
 
 It is expected that concepts from the [Gravity SDOH Clinical Care IG](http://build.fhir.org/ig/HL7/fhir-sdoh-clinicalcare/) will be incorporated into this IG. Specifically, profiles of [Condition](http://build.fhir.org/ig/HL7/fhir-sdoh-clinicalcare/StructureDefinition-SDOHCC-Condition.html) and [Observation](http://build.fhir.org/ig/HL7/fhir-sdoh-clinicalcare/StructureDefinition-SDOHCC-ObservationScreeningResponse.html) may be used to represent some SDoH related information.
 
