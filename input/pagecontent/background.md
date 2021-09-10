@@ -1,4 +1,4 @@
-The RDM provides the data tables and data elements needed to answer selected critical
+The The CODI research data model (RDM) provides the data tables and data elements needed to answer selected critical
 childhood obesity research questions. The table below summarizes the major conceptual components of
 the RDM. High priority data tables are required for a minimum CODI implementation. Medium
 priority tables should only be implemented by data partners with the resources and local interest
@@ -25,7 +25,7 @@ organization that contributes data will rely on an intermediary data partner to 
 A data coordinating center is an organization with several responsibilities:
 - It distributes research queries to data partners.
 - It assembles the results from data partners into longitudinal records.
-- It distributes references tables to data partners.
+- It distributes reference tables to data partners.
 
 The figure below shows how researchers interact with the data coordinating center, which distributes their
 research queries to data partners. The data coordinating center assembles the results into
@@ -34,14 +34,14 @@ longitudinal records, which are sent to the researchers.
 <img src="CODI_distributed_data_network.png" alt="CODI Distributed Data Network" width="100%"/>
 
 The numbers in the figure above correspond to:
-1. Researcher(s) formulates research a question using the data concepts and elements in the Common data model and sends the question to the DCC
+1. Researcher(s) formulates research a question using the data concepts and elements in the RDM and sends the question to the DCC
 1. The DCC refines and distributes the query to the local clinical and community data partners using the PCORnet and PopMedNet infrastructure
 1. Data partners receive, process, and return their query results to the DCC
 1. The DCC assembles the partial query results into a longitudinal record using the patient Link_IDs
 1. The longitudinal records are returned to the researcher
 
 ## Program and Curriculum Component Relationships
-The CODI RDM allows relationships among PROGRAM and CURRICULUM_COMPONENTs. Specifically, a PROGRAM 
+The RDM allows relationships among PROGRAM and CURRICULUM_COMPONENTs. Specifically, a PROGRAM 
 can be a child to another PROGRAM, and a PROGRAM can be comprised of many CURRICULUM_COMPONENTs. In
 addition, these CURRICULUM_COMPONENTs can be ordered. In the CODI RDM this is defined as:
 
