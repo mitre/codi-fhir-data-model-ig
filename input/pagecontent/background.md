@@ -25,7 +25,7 @@ organization that contributes data will rely on an intermediary data partner to 
 A data coordinating center is an organization with several responsibilities:
 - It distributes research queries to data partners.
 - It assembles the results from data partners into longitudinal records.
-- It distributes references tables to data partners.
+- It distributes reference tables to data partners.
 
 The figure below shows how researchers interact with the data coordinating center, which distributes their
 research queries to data partners. The data coordinating center assembles the results into
@@ -41,7 +41,7 @@ The numbers in the figure above correspond to:
 1. The longitudinal records are returned to the researcher
 
 ## Program and Curriculum Component Relationships
-The CODI RDM allows relationships among PROGRAM and CURRICULUM_COMPONENTs. Specifically, a PROGRAM 
+The RDM allows relationships among PROGRAM and CURRICULUM_COMPONENTs. Specifically, a PROGRAM 
 can be a child to another PROGRAM, and a PROGRAM can be comprised of many CURRICULUM_COMPONENTs. In
 addition, these CURRICULUM_COMPONENTs can be ordered. In the CODI RDM this is defined as:
 

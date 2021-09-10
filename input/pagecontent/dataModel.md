@@ -118,7 +118,7 @@ administration. These orders may take place in any setting, including the inpati
 
 | **PCORnet/CODI Table** | **PCORnet Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
-| PRESCRIBING | prescribingid | MedicationRequestion.identifier | CODIPrescribingProfile | CDMH mapped this to the "id" FHIR element, but CODI maps it to "identifier"
+| PRESCRIBING | prescribingid | MedicationRequest.identifier | CODIPrescribingProfile | CDMH mapped this to the "id" FHIR element, but CODI maps it to "identifier"
 | PRESCRIBING | patid | MedicationRequest.subject | CODIPrescribingProfile | 
 | PRESCRIBING | encounterid | MedicationRequest.encounter | CODIPrescribingProfile | 
 | PRESCRIBING | rx_providerid | MedicationRequest.requester | CODIPrescribingProfile, us-core-practitioner | 
@@ -169,7 +169,7 @@ pressure) directly measure an individual’s current state of attributes.
 US Core has progressed since the most recent CDMH update, so the CDMH mappings for VITAL are not used.
 US Core has profiles for individual vital signs, including BMI, blood pressure, height, and weight. 
 These individual profiles are all based on a parent US Core profile called the US Core Vital Signs Profile. The choice of profile depends on 
-which vital sign is being reported. Each vital sign is modeled as an idividual resource. They are not combined into a single "vital" 
+which vital sign is being reported. Each vital sign is modeled as an individual resource. They are not combined into a single "vital" 
 record as they are in the PCORnet CDM.
 
 | **PCORnet/CODI Table** | **PCORnet Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
@@ -345,12 +345,12 @@ the prescribed total dose for that program.
 | PROGRAM | PRESCRIBED_PROGRAM_DURATION | action.timingTiming | CODIProgramProfile |  |
 | PROGRAM | PRESCRIBED_SESSION_FREQUENCY | action.timingTiming | CODIProgramProfile |  |
 | PROGRAM | PRESCRIBED_SESSION_LENGTH | action.timingTiming | CODIProgramProfile |  |
-| PROGRAM | LOCATION_ADDRESS | address | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
-| PROGRAM | LOCATION_LATITUDE | position.latitude | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
-| PROGRAM | LOCATION_LONGITUDE | position.longitude | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
-| PROGRAM | LOCATION_GEOCODE | extension\[censusLocationGeocode\].valueString | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
-| PROGRAM | LOCATION_BOUNDARY_YEAR | extension\[censusLocationGeocodeBoundaryYear\].valueDate | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
-| PROGRAM | LOCATION_GEOLEVEL | extension\[censusLocationGeolevel\].valueCoding | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_ADDRESS | address | CODICensusLocationProfile | Contained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_LATITUDE | position.latitude | CODICensusLocationProfile | Contained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_LONGITUDE | position.longitude | CODICensusLocationProfile | Contained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_GEOCODE | extension\[censusLocationGeocode\].valueString | CODICensusLocationProfile | Contained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_BOUNDARY_YEAR | extension\[censusLocationGeocodeBoundaryYear\].valueDate | CODICensusLocationProfile | Contained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_GEOLEVEL | extension\[censusLocationGeolevel\].valueCoding | CODICensusLocationProfile | Contained CENSUS_LOCATION record |
 | PROGRAM | SESSION_OMISSION_PERCENT | extension\[programSessionOmission\].extension\[percent\].valueDecimal |  |  |
 | PROGRAM | SESSION_OMISSION_DESCRIPTION | extension\[programSessionOmission\].extension\[description\].valueString |  |  |
 | PROGRAM | SESSION_OMISSION_SYSTEMATIC | extension\[programSessionOmission\].extension\[systematic\].valueBoolean |  |  |
