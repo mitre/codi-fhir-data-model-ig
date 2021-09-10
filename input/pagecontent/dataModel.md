@@ -1,4 +1,4 @@
-The CODI research data model (RDM) utilizes existing data models where appropriate. Roughly half of the CODI data model is based on the 
+The CODI Research Data Model (RDM) utilizes existing data models where appropriate. Roughly half of the CODI RDM is based on the 
 PCORnet Common Data Model. The [Common Data Models Harmonization (CDMH) FHIR IG](http://hl7.org/fhir/us/cdmh/2019May/profiles.html) seeks to map and 
 translate data extracted for PCOR purposes into FHIR format. Where possible, this IG utilizes CDMH. Otherwise, the CODI RDM utilizes OMOP, CHORDS VDW, 
 or custom ancillary data tables.

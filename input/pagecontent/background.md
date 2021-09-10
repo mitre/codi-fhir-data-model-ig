@@ -1,21 +1,21 @@
-The RDM provides the data tables and data elements needed to answer selected critical
-childhood obesity research questions. The table below summarizes the major conceptual components of
+The CODI Research Data Model (RDM) provides the data tables and data elements needed to answer longitudinal research 
+questions. The table below summarizes the major conceptual components of
 the RDM. High priority data tables are required for a minimum CODI implementation. Medium
 priority tables should only be implemented by data partners with the resources and local interest
 to do so.
 
-## CODI Data Models
+## CODI Data Priorities
 
 | **Information about** | **Can be found in** | **Priority** | **Description** |
 | --- | --- | --- | --- |
-| The child | DEMOGRAPHIC | High | Includes demographic information about the child |
+| The person | DEMOGRAPHIC | High | Includes demographic information about the person |
 | Risk factors | FAMILY_HISTORY | Medium | Includes details about any family members’ health conditions |
-| Clinical care | ENCOUNTER<br>DIAGNOSIS<br>LAB_RESULT_CM<br>PRESCRIPTION<br>PROCEDURE<br>PROVIDER<br>VITAL | High<br>High<br>High<br>High<br>High<br>High<br>High | Includes information about the child’s interactions with the healthcare delivery system |
+| Clinical care | ENCOUNTER<br>DIAGNOSIS<br>LAB_RESULT_CM<br>PRESCRIPTION<br>PROCEDURE<br>PROVIDER<br>VITAL | High<br>High<br>High<br>High<br>High<br>High<br>High | Includes information about the person’s interactions with the healthcare delivery system |
 | Weight-related interventions | PROGRAM<br>CURRICULUM_COMPONENT<br>SESSION<br>ASSET_DELIVERY | High<br>Medium<br>High<br>Medium | Includes details about intervention aims and settings (PROGRAM); how the interventions are structured (CURRICULUM_COMPONENT); who is administering the intervention and how (SESSION); if an asset (e.g., food, money) was provided (ASSET_DELIVERY) |
 | Referrals | REFERRAL | Medium | Includes incoming and outgoing referrals within and across organizations |
 | Clinical decision support | ALERT<br>SESSION_ALERT | Medium<br>Medium | Includes details about the types of clinical alerts (ALERT) and when they triggered (SESSION_ALERT) |
 | Cost of care | COST | Low | Includes information about the amounts charged |
-| Child’s location | CENSUS_LOCATION<br>CENSUS_DEMOG | High<br>High | Includes details about where the child has resided (CENSUS_LOCATION) and population-level demographic data about that location from the census (CENSUS_DEMOG) |
+| Person’s location | CENSUS_LOCATION<br>CENSUS_DEMOG | High<br>High | Includes details about where the person has resided (CENSUS_LOCATION) and population-level demographic data about that location from the census (CENSUS_DEMOG) |
 
 ## CODI Roles
 A data partner is an organization that participates in CODI by hosting data. Many data partners
@@ -34,7 +34,7 @@ longitudinal records, which are sent to the researchers.
 <img src="CODI_distributed_data_network.png" alt="CODI Distributed Data Network" width="100%"/>
 
 The numbers in the figure above correspond to:
-1. Researcher(s) formulates research a question using the data concepts and elements in the Common data model and sends the question to the DCC
+1. Researcher(s) formulates research a question using the data concepts and elements in the RDM and sends the question to the DCC
 1. The DCC refines and distributes the query to the local clinical and community data partners using the PCORnet and PopMedNet infrastructure
 1. Data partners receive, process, and return their query results to the DCC
 1. The DCC assembles the partial query results into a longitudinal record using the patient Link_IDs
@@ -66,7 +66,7 @@ curriculum component, and so on.
 | CURRICULUM_COMPONENT | SESSION_INDEX | [implicit in ordering of action elements in parent PROGRAM] | CODIProgramProfile | the order of the action data elements in the parent PROGRAM defines the CURRICULUM_COMPONENT order |
 
 ## Cleaning Expectations
-In general, the CODI Data Models should be populated with structured data extracted from the
+In general, the CODI RDM should be populated with structured data extracted from the
 EHR or other information technology (IT) systems, unless specified otherwise. For example,
 data partners will not populate a data element in the RDM based on an analysis of free text, such
 as a progress note, nor should they attempt to suppress implausible values. The intent is that any
@@ -106,6 +106,6 @@ SESSION_ALERT).
 
 ## Start Date
 Each implementing network should establish a start date for that network. The start date
-represents the earliest possible date for which data partners can reliably populate the CODI Data
-Models. The start date is used in Sections 4 and 5 to describe how to implement tables in the
-CODI Data Models.
+represents the earliest possible date for which data partners can reliably populate the CODI RDM. 
+The start date is used in the [DEMOGRAPHIC table description of the Data Model](dataModel.html#demographic) 
+page to describe how to implement tables in the CODI RDM.
