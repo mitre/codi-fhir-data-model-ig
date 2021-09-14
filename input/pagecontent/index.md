@@ -74,3 +74,22 @@ provided by the SDOH Clinical Care IG to translate screener responses directly i
 Future versions of this IG may provide instructions for users of the underlying CODI RMD so that they 
 can translate screener responses, stored in the PCORnet `PRO_CM` table into FHIR resources, in a manner 
 similar to the [mapping instructions provided by the SDOH Clinical Care IG](http://build.fhir.org/ig/HL7/fhir-sdoh-clinicalcare/mapping_instructions.html).
+
+### Credits
+Authored by the CODI project at MITRE, sponsored by the CDC.
+
+This IG was authored by the MITRE Corporation using [FHIR Shorthand (FSH)](http://build.fhir.org/ig/HL7/fhir-shorthand/) and [SUSHI](https://github.com/FHIR/sushi), a free, open source toolchain from the [MITRE Corporation](https://www.mitre.org/).
+
+### Contact Information
+
+| Contact | |
+|----------|----------|
+| General Inquiries: | |
+| | mtiller@mitre.org |
+| | andrewg@mitre.org |
+| Co-Editor: | Andy Gregorowicz |
+| | The MITRE Corporation |
+| | andrewg@mitre.org |
+| Co-Editor: | Matthew Tiller |
+| | The MITRE Corporation |
+| | mtiller@mitre.org |
