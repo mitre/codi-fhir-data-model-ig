@@ -27,14 +27,14 @@ Regional Data Service (CHORDS) Virtual Data Warehouse (VDW) for location and pop
 
 Given the use of publicly available data models, CODI builds on the [Common Data Models Harmonization (CDMH) FHIR Implementation Guide (IG)](http://hl7.org/fhir/us/cdmh/2019May/profiles.html), 
 which maps the PCORnet and OMOP CDMs to the [FHIR US Core IG](http://hl7.org/fhir/us/core/index.html). By leveraging the mappings provided by 
-CDMH, a significant portion of the CODI RDM can be mapped to US Core. This CODI FHIR IG maps the RDM to a 
+CDMH, a significant portion of the CODI RDM can be mapped to US Core. This CODI FHIR IG maps the CODI RDM to a 
 mixture of base FHIR resources, US Core profiles, and CODI-specific profiles derived from both base FHIR as well as US Core. 
 The [Data Model](/dataModel.html) page details the full mapping between the CODI RDM and FHIR.
 
 ### Other Relevant FHIR Implemmentation Guides
 This IG describes how data relevant to the CODI project may be represented as a set of FHIR resources. The broader functionality of operating a distributed health data network for research or surveillance is covered through functionality in the The [Making EHR Data More Available for Research and Public Health (MedMorph) Reference Architecture Implementation Guide](http://hl7.org/fhir/us/medmorph/2021JAN/index.html).
 
-As the CODI project evolves, the RDM will grow to accomidate other domains of interest. Of particular interest is the area of Social Determinants of Health (SDoH), which are currently being addressed through the [HL7 Gravity Project](https://www.hl7.org/gravity/).
+As the CODI project evolves, the CODI RDM will grow to accomidate other domains of interest. Of particular interest is the area of Social Determinants of Health (SDoH), which are currently being addressed through the [HL7 Gravity Project](https://www.hl7.org/gravity/).
 
 #### MedMorph
 MedMorph seeks to enable access to clinical data with a standardized architecture. The MedMorph IG is described as an "Reference Architecture IG" in that it provides
@@ -52,7 +52,7 @@ While the requirements for a Data Mart in a Research Data Query provide the opti
 
 #### Gravity
 At the time of creation of this IG, the CODI RDM does not have the ability to represent SDoH information. 
-The RDM is being updated and upon completion, those changes will be represented in a new version 
+The CODI RDM is being updated and upon completion, those changes will be represented in a new version 
 of this IG.
 
 At the time of creation of this IG, the underlying CODI Data Model does not have the ability to represent SDoH information. The data model is being updated and upon completion, those changes will be represented in a new version of this IG.

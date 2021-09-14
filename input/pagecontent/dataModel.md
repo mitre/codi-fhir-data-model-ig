@@ -15,16 +15,16 @@ mapped to the "identifier" data element because CODI utilizes data owners' busin
 #### Demographic
 The CDM DEMOGRAPHIC table contains a single record for each patient with at
 least one clinical visit or program participation since the implementing network’s start date.
-Implementers should not include patients without other records in the RDM. For example, a
+Implementers should not include patients without other records in the CODI RDM. For example, a
 patient should be included in the DEMOGRAPHIC table if they have ENCOUNTER data, but not included if they have only 
 VITAL data.
 
 To preserve referential integrity, there must be a DEMOGRAPHIC record for any person for
 whom information exists in any other RDM table (such as ENCOUNTER or SESSION).
 Conversely, every DEMOGRAPHIC record should have corresponding records in at least one
-other RDM table.
+other CODI RDM table.
 
-CODI omits DEMOGRAPHIC records without other information in the RDM because populating the
+CODI omits DEMOGRAPHIC records without other information in the CODI RDM because populating the
 DEMOGRAPHIC table with all records introduces the possibility that PII is shared with
 the DCC even though insufficient information exists about those records to answer possible
 research questions. For example, a person might be selected as a member of a cohort based on age

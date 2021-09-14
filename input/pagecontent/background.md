@@ -1,6 +1,6 @@
 The CODI Research Data Model (RDM) provides the data tables and data elements needed to answer longitudinal research 
 questions. The table below summarizes the major conceptual components of
-the RDM. High priority data tables are required for a minimum CODI implementation. Medium
+the CODI RDM. High priority data tables are required for a minimum CODI implementation. Medium
 priority tables should only be implemented by data partners with the resources and local interest
 to do so.
 
@@ -83,7 +83,7 @@ this issue and align the below value sets with existing code systems.
 ### Cleaning Expectations
 In general, the CODI RDM should be populated with structured data extracted from the
 EHR or other information technology (IT) systems, unless specified otherwise. For example,
-data partners will not populate a data element in the RDM based on an analysis of free text, such
+data partners will not populate a data element in the CODI RDM based on an analysis of free text, such
 as a progress note, nor should they attempt to suppress implausible values. The intent is that any
 data cleaning or inferences will be performed post-hoc by researchers based on their research
 needs.
@@ -105,7 +105,7 @@ to the CODI ancillary tables as well:
 - When the source value cannot be mapped to CDM, CDM uses OT (other).
 
 ### Reference Tables
-With the RDM, there are three tables likely to not be populated from an EHR or another IT
+With the CODI RDM, there are three tables likely to not be populated from an EHR or another IT
 system. These include ALERT, CENSUS_DEMOG, and PROGRAM. The CENSUS_DEMOG
 table contains information from the Census Bureau. The data coordinating center (DCC) will
 share this file with data partners using PopMedNet or a similar mechanism agreed upon with the
@@ -113,7 +113,7 @@ data partners.
 
 The remaining two tables must be populated manually. Data partners are encouraged to populate
 these tables with data provided manually as part of the extract–transform–load (ETL) process
-that populates the remainder of the RDM. For example, these tables might be populated using a
+that populates the remainder of the CODI RDM. For example, these tables might be populated using a
 series of SQL INSERT statements using explicit VALUEs instead of a SELECT statement. Data
 partners are further encouraged to test referential integrity to ensure the primary keys for these
 tables connect properly with the tables that reference them (such as SESSION and
