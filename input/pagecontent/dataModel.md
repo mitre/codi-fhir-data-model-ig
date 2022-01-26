@@ -1,30 +1,30 @@
-The CODI research data model (RDM) utilizes existing data models where appropriate. Roughly half of the CODI data model is based on the 
+The CODI Research Data Model (RDM) utilizes existing data models where appropriate. Roughly half of the CODI RDM is based on the 
 PCORnet Common Data Model. The [Common Data Models Harmonization (CDMH) FHIR IG](http://hl7.org/fhir/us/cdmh/2019May/profiles.html) seeks to map and 
 translate data extracted for PCOR purposes into FHIR format. Where possible, this IG utilizes CDMH. Otherwise, the CODI RDM utilizes OMOP, CHORDS VDW, 
 or custom ancillary data tables.
 
 Below are the mappings from CODI RDM data tables into FHIR.
 
-## PCORnet Data Tables
+### PCORnet Data Tables
 The following subsections detail CODI tables that are based on the PCORnet CDM. Only select PCORnet data elements are used in CODI. The FHIR mappings 
 are based on [CDMH](http://hl7.org/fhir/us/cdmh/2019May/profiles.html), except for the Provider and Vital tables, details of which are given below.
 
 CDMH maps identifier data elements to the "id" FHIR data element (except for the CDM DEMOGRAPHIC table, which is mapped to "identifier"). But in CODI they are 
 mapped to the "identifier" data element because CODI utilizes data owners' business identifiers, not FHIR logical identifiers, to reference data.
 
-### Demographic
+#### Demographic
 The CDM DEMOGRAPHIC table contains a single record for each patient with at
 least one clinical visit or program participation since the implementing network’s start date.
-Implementers should not include patients without other records in the RDM. For example, a
+Implementers should not include patients without other records in the CODI RDM. For example, a
 patient should be included in the DEMOGRAPHIC table if they have ENCOUNTER data, but not included if they have only 
 VITAL data.
 
 To preserve referential integrity, there must be a DEMOGRAPHIC record for any person for
 whom information exists in any other RDM table (such as ENCOUNTER or SESSION).
 Conversely, every DEMOGRAPHIC record should have corresponding records in at least one
-other RDM table.
+other CODI RDM table.
 
-CODI omits DEMOGRAPHIC records without other information in the RDM because populating the
+CODI omits DEMOGRAPHIC records without other information in the CODI RDM because populating the
 DEMOGRAPHIC table with all records introduces the possibility that PII is shared with
 the DCC even though insufficient information exists about those records to answer possible
 research questions. For example, a person might be selected as a member of a cohort based on age
@@ -43,7 +43,7 @@ in the Privacy Preserving Record Linkage (PPRL) IG.
 | DEMOGRAPHIC | race | Patient.extension: us-core-race | CODIDemographicProfile | 
 | DEMOGRAPHIC | pat_pref_language_spoken | Patient.communication.language | CODIDemographicProfile | 
 
-### Diagnosis
+#### Diagnosis
 The CDM DIAGNOSIS table contains one record for each diagnosis of a patient. Diagnosis codes indicate the results of diagnostic
 processes and medical coding within healthcare delivery. Data in this table are expected to be from healthcare-mediated processes and
 reimbursement drivers.
@@ -61,7 +61,7 @@ reimbursement drivers.
 | DIAGNOSIS | dx_source | Condition.encounter.diagnosis.use | CODIDiagnosisProfile, CODIEncounterProfile | 
 | DIAGNOSIS | dx_origin | Condition.extension | CODIDiagnosisProfile | Extension created: diagnosisOrigin
 
-### Encounter
+#### Encounter
 The CDM ENCOUNTER table contains one record for each unique encounter. Encounters are interactions between patients and
 providers within the context of healthcare delivery. An encounter comprises multiple visits, diagnoses, procedures, etc.
 
@@ -85,7 +85,7 @@ providers within the context of healthcare delivery. An encounter comprises mult
 | ENCOUNTER | payer_type_secondary | Encounter.extension (Proposed Name: payer-type-secondary : Coding) | CODIEncounterProfile | Extension created: encounterPayerType
 | ENCOUNTER | facility_type | Encounter.location.location.type | CODIEncounterProfile, us-core-location | 
 
-### Lab_Result_CM
+#### Lab_Result_CM
 The CDM LAB_RESULT_CM table contains one record for each lab result of a patient. This table is used to store quantitative and
 qualitative measurements from blood and other body specimens.
 
@@ -112,13 +112,13 @@ qualitative measurements from blood and other body specimens.
 | LAB_RESULT_CM | abn_ind | Observation.interpretation | USCoreLaboratoryResultObservationProfile | 
 | LAB_RESULT_CM | result_snomed | Observation.value\[x\](CodeableConcept) | USCoreLaboratoryResultObservationProfile | 
 
-### Prescribing
+#### Prescribing
 The CDM PRESCRIBING table contains one record for each prescription ordered. Provider orders for medication dispensing and/or
 administration. These orders may take place in any setting, including the inpatient or outpatient basis.
 
 | **PCORnet/CODI Table** | **PCORnet Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
 | -- | -- | -- | -- | -- | 
-| PRESCRIBING | prescribingid | MedicationRequestion.identifier | CODIPrescribingProfile | CDMH mapped this to the "id" FHIR element, but CODI maps it to "identifier"
+| PRESCRIBING | prescribingid | MedicationRequest.identifier | CODIPrescribingProfile | CDMH mapped this to the "id" FHIR element, but CODI maps it to "identifier"
 | PRESCRIBING | patid | MedicationRequest.subject | CODIPrescribingProfile | 
 | PRESCRIBING | encounterid | MedicationRequest.encounter | CODIPrescribingProfile | 
 | PRESCRIBING | rx_providerid | MedicationRequest.requester | CODIPrescribingProfile, us-core-practitioner | 
@@ -132,7 +132,7 @@ administration. These orders may take place in any setting, including the inpati
 | PRESCRIBING | rx_dose_ordered_unit | MedicationRequest.dosageInstruction.doseAndRate.dose\[x\] | CODIPrescribingProfile | 
 | PRESCRIBING | rx_source | MedicationRequest.extension\[prescribingRxSource\] | CODIPrescribingProfile | The rx_source data element is missing from CDMH
 
-### Procedures
+#### Procedures
 The CDM PROCEDURES table contains one record per procedure for a patient. Procedure codes indicate the discrete medical
 interventions and diagnostic testing, such as surgical procedures and lab orders, delivered within a healthcare context.
 
@@ -149,7 +149,7 @@ interventions and diagnostic testing, such as surgical procedures and lab orders
 | PROCEDURES | px_type | Procedure.code | CODIProceduresProfile | 
 | PROCEDURES | px_source | Procedure.Extension (Proposed Name: data-source-type : CodeableConcept) | CODIProceduresProfile | Extension created: proceduresPxSource
 
-### Provider
+#### Provider
 The CDM PROVIDER table contains one record per PROVIDER ID. Data about the providers who are involved in the care processes
 documented in the CDM.
 
@@ -162,14 +162,14 @@ If this is addressed in future CDMH updates then CODI will attempt to align with
 | PROVIDER | provider_sex | Practitioner.gender | Practitioner | USCorePractitionerProfile |
 | PROVIDER | provider_specialty_primary | Practitioner.specialty | Practitioner | USCorePractitionerProfile |
 
-### Vital
+#### Vital
 The CDM VITAL table contains one record for each measurement of vital signs. Vital signs (such as height, weight, and blood
 pressure) directly measure an individual’s current state of attributes.
 
 US Core has progressed since the most recent CDMH update, so the CDMH mappings for VITAL are not used.
 US Core has profiles for individual vital signs, including BMI, blood pressure, height, and weight. 
 These individual profiles are all based on a parent US Core profile called the US Core Vital Signs Profile. The choice of profile depends on 
-which vital sign is being reported. Each vital sign is modeled as an idividual resource. They are not combined into a single "vital" 
+which vital sign is being reported. Each vital sign is modeled as an individual resource. They are not combined into a single "vital" 
 record as they are in the PCORnet CDM.
 
 | **PCORnet/CODI Table** | **PCORnet Data Element** | **FHIR Data Element** | **FHIR Resource/Profile/Extension** | **Comments** | 
@@ -186,9 +186,9 @@ record as they are in the PCORnet CDM.
 | VITAL | systolic | Observation.code, Observation.value\[x\] | USCoreBloodPressureProfile | Blood-pressure-specific profile
 | VITAL | original_bmi | Observation.code, Observation.value\[x\] | USCoreBMIProfileProfile | BMI-specific profile
 
-## Ancillary Data Tables
+### Ancillary Data Tables
 
-### Alert
+#### Alert
 The ALERT table contains one record for each distinct kind of alert. Alerts are components of a clinical decision support system
 (CDS). Given the gamut of possible alerts and the idiosyncrasies of CDS implementations, CODI only captures a prose description of
 the intended function of the alert. Only cardiometabolic condition and weight related alerts should be captured for CODI.
@@ -205,7 +205,7 @@ trigger.
 | ALERT | ALERT_TRIGGER | Communication.payload\[alertTrigger\].contentString | CODIAlertProfile | Slice on payload element |
 | ALERT | ALERT_FORM | Communication.payload\[alertForm\].contentString | CODIAlertProfile | Slice on payload element |
 
-### Asset Delivery
+#### Asset Delivery
 The ASSET_DELIVERY table contains one record for each contiguous period of time during which a person consistently receives
 assets. An asset is a resource transferred by a program to an individual.The intention is that each record represents a series of asset deliveries that regularly
 transpires. In situations where each delivery is ad hoc, the expectation is that a separate record
@@ -234,7 +234,7 @@ circumstances surrounding the delivery of assets.
 | ASSET_DELIVERY | DELIVERY_FREQ | occurrence\[x\] | ServiceRequest |  |
 | ASSET_DELIVERY | DELIVERY_FREQ_UNIT | occurrence\[x\] | ServiceRequest |  |
 
-### Curriculum Component
+#### Curriculum Component
 The CURRICULUM_COMPONENT table enumerates the standard elements of a program. It
 supports a fixed curriculum, in which the components are ordered using SESSION_INDEX, and
 a recurring curriculum, in which the components repeat. Repeating components are documented
@@ -268,7 +268,7 @@ so the data element SESSION_INDEX below is not used.
 | CURRICULUM_COMPONENT | INTERVENTION_NAVIGATION | topic | CODICurriculumComponentProfile | Value set InteractionType |
 | CURRICULUM_COMPONENT | DOSE | extension\[sessionDose\] | CODICurriculumComponentProfile |  |
 
-### Family History
+#### Family History
 The FAMILY_HISTORY table stores information regarding a person’s family history of disease. A separate record is created for each
 report of a condition that a family member has. Thus, if a person’s parents both have a
 history of obesity, two records would be present in this table. Absence of a record in this table is not indicative the absence of a condition.
@@ -286,7 +286,7 @@ to map from whatever terminology is used for family history to one of these voca
 | FAMILY_HISTORY | RELATIONSHIP | relationship | FamilyMemberHistory |  |
 | FAMILY_HISTORY | REPORT_DATE | date | FamilyMemberHistory |  |
 
-### Program
+#### Program
 The PROGRAM table contains one record for each distinct weight-related program. For the
 purposes of CODI, each location at which a program is administered constitutes a distinct
 program. For example, each clinic that administers a weight management program appears
@@ -306,8 +306,8 @@ affiliated with an encompassing program. For example, consider a weight-related 
 two component programs (a cooking class and a physical activity program); participation in each
 is based on each person’s needs: this configuration includes three programs. The affiliated
 programs (i.e., cooking class, physical activity program) include prescribed doses and have
-specific aims, while the parent program has no set dose, and its aims are broad. The
-AFFILIATED_PROGRAMID attribute allows the affiliated programs to indicate the parent
+specific aims, while the encompassing program has no set dose, and its aims are broad. The
+AFFILIATED_PROGRAMID attribute allows the affiliated programs to indicate the encompassing
 program with which they are affiliated.
 
 The attributes with the LOCATION_ prefix describe the location at which the program is
@@ -337,7 +337,7 @@ the prescribed total dose for that program.
 | PROGRAM | PROGRAM_NAME | title | CODIProgramProfile |  |
 | PROGRAM | PROGRAM_DESCRIPTION | description | CODIProgramProfile |  |
 | PROGRAM | PROGRAM_SETTING | useContext | CODIProgramProfile | Value set SettingType |
-| PROGRAM | AFFILIATED_PROGRAMID | action.definitionCanonical | CODIProgramProfile | canonical reference to a child PROGRAM |
+| PROGRAM | AFFILIATED_PROGRAMID | action.definitionCanonical | CODIProgramProfile | canonical reference to an affiliated PROGRAM |
 | PROGRAM | AIM_NUTRITION | topic | CODIProgramProfile | Value set ProgramType |
 | PROGRAM | AIM_ACTIVITY | topic | CODIProgramProfile | Value set ProgramType |
 | PROGRAM | AIM_WEIGHT | topic | CODIProgramProfile | Value set ProgramType |
@@ -345,17 +345,17 @@ the prescribed total dose for that program.
 | PROGRAM | PRESCRIBED_PROGRAM_DURATION | action.timingTiming | CODIProgramProfile |  |
 | PROGRAM | PRESCRIBED_SESSION_FREQUENCY | action.timingTiming | CODIProgramProfile |  |
 | PROGRAM | PRESCRIBED_SESSION_LENGTH | action.timingTiming | CODIProgramProfile |  |
-| PROGRAM | LOCATION_ADDRESS | address | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
-| PROGRAM | LOCATION_LATITUDE | position.latitude | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
-| PROGRAM | LOCATION_LONGITUDE | position.longitude | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
-| PROGRAM | LOCATION_GEOCODE | extension\[censusLocationGeocode\].valueString | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
-| PROGRAM | LOCATION_BOUNDARY_YEAR | extension\[censusLocationGeocodeBoundaryYear\].valueDate | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
-| PROGRAM | LOCATION_GEOLEVEL | extension\[censusLocationGeolevel\].valueCoding | CODICensusLocationProfile | Contiained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_ADDRESS | address | CODICensusLocationProfile | Contained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_LATITUDE | position.latitude | CODICensusLocationProfile | Contained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_LONGITUDE | position.longitude | CODICensusLocationProfile | Contained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_GEOCODE | extension\[censusLocationGeocode\].valueString | CODICensusLocationProfile | Contained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_BOUNDARY_YEAR | extension\[censusLocationGeocodeBoundaryYear\].valueDate | CODICensusLocationProfile | Contained CENSUS_LOCATION record |
+| PROGRAM | LOCATION_GEOLEVEL | extension\[censusLocationGeolevel\].valueCoding | CODICensusLocationProfile | Contained CENSUS_LOCATION record |
 | PROGRAM | SESSION_OMISSION_PERCENT | extension\[programSessionOmission\].extension\[percent\].valueDecimal |  |  |
 | PROGRAM | SESSION_OMISSION_DESCRIPTION | extension\[programSessionOmission\].extension\[description\].valueString |  |  |
 | PROGRAM | SESSION_OMISSION_SYSTEMATIC | extension\[programSessionOmission\].extension\[systematic\].valueBoolean |  |  |
 
-### Referral
+#### Referral
 The REFERRAL table contains one record for each outgoing or incoming referral. The
 DIRECTION attribute indicates if the record represents a data partner initiating a referral
 (outgoing) or receiving a referral (incoming). Internal referrals should result in two records in the
@@ -374,7 +374,7 @@ organization codes. These additional codes should include at least one letter so
 | REFERRAL | REFERRALID | identifier | CODIReferralProfile |  |
 | REFERRAL | PATID | subject | CODIReferralProfile |  |
 | REFERRAL | ENCOUNTERID | encounter | CODIReferralProfile |  |
-| REFERRAL | DIRECTION | extension\[referralDirection\] | CODIReferralProfile |  |
+| REFERRAL | DIRECTION | extension\[referralDirection\] | CODIReferralProfile | Value set DirectionType |
 | REFERRAL | REFERRAL_DATE | authoredOn | CODIReferralProfile |  |
 | REFERRAL | REFERRAL_STATUS | extension\[referralDispositionStatus\] | CODIReferralProfile |  |
 | REFERRAL | REFERRAL_PRIOR_AUTH | extension\[referralPriorAuth\] | CODIReferralProfile |  |
@@ -383,13 +383,58 @@ organization codes. These additional codes should include at least one letter so
 | REFERRAL | DESTINATION_ORGANIZATION | performer | CODIReferralProfile | CMS Certification Numbers |
 | REFERRAL | DESTINATION_SPECIALTY | performerType | CODIReferralProfile |  |
 
-### Session
-The SESSION table contains one record for each session. A session is a specific point in time where a person is involved in
-programming that focuses on obesity, obesity prevention, healthy eating, or active living.
+#### Session
+The SESSION table contains one record for each interaction between a person and a healthcare
+provider or program representative. A session is a specific point in time where a person is involved in
+programming that focuses on obesity, obesity prevention, healthy eating, or active living. 
 
-In a clinical setting, a session corresponds to a visit. There may be multiple visits in a single encounter. The ENCOUNTERID field is
-required for clinical sessions. In a community setting, a session corresponds to one component of a program. The PROGRAMID field is required for sessions that
+In a clinical setting, a session corresponds to a visit. There may be multiple visits in a single encounter. 
+In its most basic incarnation, the SESSION table is an
+extension of the ENCOUNTER table, to include CODI-specific attributes. For example, during a
+well-child visit, exercise and nutrition screening may transpire. When an ENCOUNTER
+involves multiple providers interacting with a person, multiple SESSION records should be
+created. For example, a single encounter sometimes includes a person interacting with multiple
+providers, such as the primary care physician and a dietician. Each of these interactions is a
+separate session because they involve different providers.
+
+The ENCOUNTERID field is required for clinical sessions. In a community setting, a session corresponds to 
+one component of a program. The PROGRAMID field is required for sessions that
 are components of a program. At least one of those fields should be present in every case.
+
+As an example of the difference between PROGRAM data and SESSION data, consider
+Girls on the Run, where there would be one PROGRAM entry for each school where Girls on the Run
+is offered. In the SESSION table, there would be one record for each time that a
+child attends the program. The ENCOUNTERID would be missing because Girls on the Run is a 
+community program that does not collect clinical information.
+
+At a minimum, data partners should populate the SESSION table for well-child visits and for
+encounters that are part of a weight-related program (e.g., MEND, Healthy Weight Clinic, Girls
+on the Run, or Hunger Free Colorado). The next highest priority is to populate the SESSION
+table for primary care encounters and for encounters related to obesity or obesity-related
+comorbidities (e.g., a follow-up weight check, a visit for nutritional counseling, or a visit with a
+specialist such as endocrinology or cardiology). Finally, data partners would populate the
+SESSION table for every encounter.
+
+If a data partner partially implements the SESSION table, no record should be created for
+encounter types that have not been mapped to the SESSION table. For example, if a data partner
+implements the SESSION table for only well-child visits and weight-related program encounters,
+then no record in the SESSION table should be created for emergency department encounters.
+For weight-related programs based in a community setting, each SESSION record corresponds to
+a child’s participation in the program. For example, a child that completes a program that meets
+weekly ten times should have ten distinct SESSION records.
+
+The DOSE attribute indicates the amount of time spent interacting with the child (in hours). This
+attribute should only be populated based on what is documented in the EHR or other IT system.
+If the duration of the session is not documented, the DOSE attribute should remain empty. For
+example, the DOSE attribute would not be populated for interventions conducted by mail and
+may not be populated for Web-based interventions.
+
+The SESSION table includes several process-related attributes (SCREENING, COUNSELING,
+and those with the INTERVENTION_ prefixes). In some cases, the values of these attributes
+need to be established based on local program knowledge as opposed to what is present in the
+EHR. For example, if a program stipulates that every session includes physical activity, that
+attribute can be set solely based on attendance information because the EHR or IT system may
+not track whether physical activity happened—it always happens.
 
 The CODI Session Profile is based on the base FHIR Procedure resource as opposed to the US Core Procedure Profile. The US Core resource 
 requires the code data element and constrains its value set in a way that does not make sense for CODI. It also requires a performed time. 
@@ -403,7 +448,7 @@ The base Procedure resource more closely aligns with the CODI RDM.
 | SESSION | PROVIDERID | performer.actor | CODISessionProfile |  |
 | SESSION | PROGRAMID | instantiatesCanonical | CODISessionProfile | canonical reference to PROGRAM |
 | SESSION | SESSION_DATE | performedDateTime | CODISessionProfile |  |
-| SESSION | SESSION_MODE | category | CODISessionProfile |  |
+| SESSION | SESSION_MODE | category | CODISessionProfile | Value set ModeType |
 | SESSION | SCREENING | reasonCode | CODISessionProfile | Value set InteractionType |
 | SESSION | COUNSELING | reasonCode | CODISessionProfile | Value set InteractionType |
 | SESSION | INTERVENTION_ACTIVITY | reasonCode | CODISessionProfile | Value set InteractionType |
@@ -416,17 +461,18 @@ The base Procedure resource more closely aligns with the CODI RDM.
 | SESSION | ALERT_DATE | extension\[sessionSessionAlert\].extension\[sessionAlertDateTime\].valueDateTime | CODISessionProfile | part of SESSION_ALERT |
 | SESSION | ALERT_TIME | extension\[sessionSessionAlert\].extension\[sessionAlertDateTime\].valueDateTime | CODISessionProfile | part of SESSION_ALERT |
 
-### Session Alert
+#### Session Alert
 The SESSION_ALERT table contains one record for each alert that triggered during a session.
 
 CODI session alerts are not implemented as a distinct FHIR resource. Instead, they are an extension on the Procedure resource as 
 defined in CODISessionProfile. The extension has cardinality 0..\* and contains a reference to an ALERT and a dateTime.
 
-## CHORDS Data Tables
+### CHORDS Data Tables
 
-### Census Demog
+#### Census Demog
 The CHORDS CENSUS_DEMOG table is a static reference table that will be provided to each data partner through the PopMedNet data
 sharing client. This data is used to provide community level attributes for each census tract or county of a patient’s residence.
+This table relates to CENSUS_LOCATION via the "geocode" data element.
 
 For complete documentation, see the CHORDS VDW Data Model Manual. The data elements are listed below for informational purposes.
 
@@ -456,7 +502,7 @@ For complete documentation, see the CHORDS VDW Data Model Manual. The data eleme
 | CENSUS_DEMOG | RURAL_URBAN_CODE |  |  |  |
 | CENSUS_DEMOG | CensusLocation |  |  |  |
 
-### Census Location
+#### Census Location
 The CHORDS CENSUS_LOCATION table holds patient and program geographic location information. Addresses should be geocoded, 
 and FIPS codes down to the census tract level should be populated in the CENSUS_LOCATION table.
 
@@ -472,22 +518,22 @@ requires the name data element, which is a name as used by humans, and does not 
 | CENSUS_LOCATION | (not in CODI RDM) | extension\[censusLocationProgramId\].valueReference | CODICensusLocationProfile | FHIR IG adds reference to Program to provide location |
 | CENSUS_LOCATION | LOC_START | address.period.start | CODICensusLocationProfile |  |
 | CENSUS_LOCATION | LOC_END | address.period.start | CODICensusLocationProfile |  |
-| CENSUS_LOCATION | GEOCODE | extension\[censusLocationGeocode\].valueString | CODICensusLocationProfile |  |
+| CENSUS_LOCATION | GEOCODE | extension\[censusLocationGeocode\].valueString | CODICensusLocationProfile | foreign key to CENSUS_DEMOG |
 | CENSUS_LOCATION | GEOCODE_BOUNDARY_YEAR | extension\[censusLocationGeocodeBoundaryYear\].valueDate | CODICensusLocationProfile |  |
 | CENSUS_LOCATION | GEOLEVEL | extension\[censusLocationGeolevel\].valueCoding | CODICensusLocationProfile |  |
 | CENSUS_LOCATION | LATITUDE | position.latitude | CODICensusLocationProfile |  |
 | CENSUS_LOCATION | LONGITUDE | position.longitude | CODICensusLocationProfile |  |
 
-## OMOP Data Table
+### OMOP Data Table
 
-### Cost
+#### Cost
 The OMOP COST table captures records containing the cost of any medical event recorded in one of the OMOP clinical event table.
 1) This table does not capture the cost of providing the service, but rather the amounts billed and received.
 2) The COST table can link to ENCOUNTER, LAB_RESULT_CM, PROCEDURES, or SESSION.
 
 The FHIR ChargeItem resource is required to reference the event that incurred the charge and to document the date and time of the charge.
 
-The FHIR Invoice resource contains the actual incurred cost and date of billing.
+The FHIR Invoice resource contains the actual billed cost and date of billing.
 
 Payment information is recorded in a FHIR PaymentReconciliation resource.
 

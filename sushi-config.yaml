@@ -2,13 +2,13 @@ id: hl7.fhir.us.codi
 canonical: http://hl7.org/fhir/us/codi
 name: HL7FHIRImplementationGuideCODIRelease1USRealmSTU1
 status: draft
-version: 0.1.0
+version: 1.0.0
 fhirVersion: 4.0.1
 copyrightYear: 2021+
 releaseLabel: draft
 jurisdiction: urn:iso:std:iso:3166#US "null"
 publisher:
-  name: Matthew Tiller
+  name: The MITRE Corporation
   url: https://www.mitre.org
   email: mtiller@mitre.org
 dependencies:
@@ -21,5 +21,3 @@ menu:
   Background: background.html
   Data Model: dataModel.html
   Artifacts: artifacts.html
-  Downloads: downloads.html
-  Examples: examples.html
